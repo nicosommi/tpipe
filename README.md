@@ -27,6 +27,7 @@ It supports error matching with regexes.
 
 As this is a pipe, the order matter and the returned value on a mapping is what is sent to the next one.  
 * REMEMBER TO RETURN THE ACCUMULATED OBJECT ON YOUR MAPPINGS *  
+
 <!-- endph -->
 
 <!-- ph usagesAndExamples -->
