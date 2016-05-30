@@ -1,0 +1,31 @@
+# Logs
+logs
+*.log
+/dna
+*.log.*
+
+
+# nothing yet but it will be
+
+# project specific ignored files
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+build/Debug
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+node_modules
+
+# Coverage
+lcov.info
+.coverage
+lib-cov
