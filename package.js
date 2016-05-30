@@ -1,6 +1,6 @@
 /* ph replacements */
 /* name, /'name': 'tpipe'/g, 'name': 'tpipe' */
-/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.2' */
+/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.3' */
 /* description, /'description': 'a\ gdd\ utility'/g, 'description': 'piper' */
 /* main, /'main': '[a-zA-Z\.\/]+'/ig, 'main': './dist/lib/tPipe.js' */
 /* license, /MIT/g, MIT */
@@ -14,7 +14,7 @@
 module.exports =
 {
   'name': 'tpipe',
-  'version': '0.0.2',
+  'version': '0.0.3',
   'description': 'piper',
   'main': './dist/lib/tPipe.js',
   'standard': {
