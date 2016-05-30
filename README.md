@@ -26,7 +26,7 @@ Currently defaults to express (built in basic mappings).
 It supports error matching with regexes.  
 
 As this is a pipe, the order matter and the returned value on a mapping is what is sent to the next one.  
-* REMEMBER TO RETURN THE ACCUMULATED OBJECT ON YOUR MAPPINGS *  
+*REMEMBER TO RETURN THE ACCUMULATED OBJECT ON YOUR MAPPINGS*
 
 <!-- endph -->
 
@@ -37,7 +37,7 @@ With Express
 
 import TPipe from "tpipe"
 const myPipe = new TPipe(function (input, req, res, next) {
-  return Promise.resolve({ parameters: [], body: {}})
+  return Promise.resolve({ parameters: {}, body: {}})
 })
 
 app.get('/resouce', myPipe.getHandler())
