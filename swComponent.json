@@ -246,6 +246,27 @@
           }
         }
       ]
+    },
+    {
+      "name": "travis",
+      "type": "ci",
+      "version": "0.0.0",
+      "options": {
+        "sources": [],
+        "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+        "cleanPath": ".gdd-clean"
+      },
+      "sourceCodeFiles": [
+        {
+          "name": ".travis.yml",
+          "path": ".travis.yml",
+          "options": {
+            "sources": [],
+            "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+            "cleanPath": ".gdd-clean"
+          }
+        }
+      ]
     }
   ]
 }

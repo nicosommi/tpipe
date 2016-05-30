@@ -1,6 +1,6 @@
 {
   "name": "tpipe",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "piper",
   "main": "./dist/lib/tPipe.js",
   "standard": {
