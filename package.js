@@ -97,7 +97,7 @@ module.exports =
   /* ph repository */
   'repository': {
     'type': 'git',
-    'url': 'git+https://github.com/nicosommi/gddify.git'
+    'url': 'git+https://github.com/nicosommi/tpipe.git'
   },
   /* endph */
   /* ph extra */
@@ -107,6 +107,6 @@ module.exports =
   'contributors': [],
   /* endph */
   /* ph homepage */
-  'homepage': 'https://github.com/nicosommi/gddify'
+  'homepage': 'https://github.com/nicosommi/tpipe'
   /* endph */
 }

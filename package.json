@@ -56,9 +56,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicosommi/gddify.git"
+    "url": "git+https://github.com/nicosommi/tpipe.git"
   },
   "readmeFilename": "README.md",
   "contributors": [],
-  "homepage": "https://github.com/nicosommi/gddify"
+  "homepage": "https://github.com/nicosommi/tpipe"
 }
