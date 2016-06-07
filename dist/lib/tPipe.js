@@ -23,9 +23,9 @@ exports.expressResponseMapping = expressResponseMapping;
 exports.expressRequestMapping = expressRequestMapping;
 exports.expressErrorMapping = expressErrorMapping;
 
-var _log = require('./log.js');
+var _log = require('./utils/log.js');
 
-var _match = require('./match.js');
+var _match = require('./utils/match.js');
 
 var _match2 = _interopRequireDefault(_match);
 
@@ -45,7 +45,7 @@ var errorMatch = Symbol('errorMatch');
 
 function expressResponseMapping(output, input, req, res, next) {
   _get__('logger').log('expressResponse begin', { input: input, output: output });
-  res.send(output.parameters.status || 200, output.body);
+  res.status(output.parameters.status || 200).send(output.body);
   next();
   return _get__('Promise').resolve(output);
 }
