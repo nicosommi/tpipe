@@ -2,7 +2,11 @@
   "name": "default",
   "type": "default",
   "options": {
-    "sources": [],
+    "sources": [
+      {
+        "path": "./"
+      }
+    ],
     "basePath": "/home/nicosommi/workspace/nicosommi/tpipe/./",
     "cleanPath": ".gdd-clean"
   },
@@ -10,9 +14,13 @@
     {
       "name": "nodejs",
       "type": "runtime",
-      "version": "0.0.8",
+      "version": "0.0.10",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean",
         "jsonification": [
@@ -33,7 +41,11 @@
           "name": "package.json",
           "path": "package.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean",
             "jsonification": [
@@ -54,7 +66,11 @@
           "name": ".gitignore",
           "path": ".npmignore",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean",
             "jsonification": [
@@ -76,9 +92,13 @@
     {
       "name": "gulp",
       "type": "buildingTool",
-      "version": "0.0.9",
+      "version": "0.0.12",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
@@ -87,7 +107,11 @@
           "name": "gulpfile.babel.js",
           "path": "gulpfile.babel.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -96,7 +120,11 @@
           "name": "tasks/build.js",
           "path": "tasks/build.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -105,7 +133,11 @@
           "name": "tasks/clean.js",
           "path": "tasks/clean.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -114,7 +146,11 @@
           "name": "tasks/suppress-errors.js",
           "path": "tasks/suppress-errors.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -123,7 +159,11 @@
           "name": "tasks/test.js",
           "path": "tasks/test.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -132,7 +172,11 @@
           "name": ".babelrc",
           "path": ".babelrc",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -142,9 +186,13 @@
     {
       "name": "mit",
       "type": "license",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
@@ -153,7 +201,11 @@
           "name": "LICENSE",
           "path": "LICENSE",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -163,9 +215,13 @@
     {
       "name": "utils",
       "type": "utils",
-      "version": "0.0.1",
+      "version": "0.0.8",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
@@ -174,7 +230,11 @@
           "name": "source/lib/promise.js",
           "path": "source/lib/promise.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -183,43 +243,63 @@
           "name": "spec/promise.spec.js",
           "path": "spec/promise.spec.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
         {
-          "name": "./source/lib/log.js",
-          "path": "./source/lib/log.js",
+          "name": "./source/lib/utils/log.js",
+          "path": "source/lib/utils/log.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
         {
-          "name": "./source/lib/match.js",
-          "path": "./source/lib/match.js",
+          "name": "./spec/utils/log.spec.js",
+          "path": "spec/utils/log.spec.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
         {
-          "name": "./spec/log.spec.js",
-          "path": "./spec/log.spec.js",
+          "name": "./source/lib/utils/match.js",
+          "path": "source/lib/utils/match.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
         {
-          "name": "./spec/match.spec.js",
-          "path": "./spec/match.spec.js",
+          "name": "./spec/utils/match.spec.js",
+          "path": "spec/utils/match.spec.js",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -231,7 +311,11 @@
       "type": "docs",
       "version": "0.0.5",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
@@ -240,7 +324,11 @@
           "name": "README.md",
           "path": "README.md",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
@@ -252,7 +340,11 @@
       "type": "ci",
       "version": "0.0.0",
       "options": {
-        "sources": [],
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
         "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
@@ -261,12 +353,76 @@
           "name": ".travis.yml",
           "path": ".travis.yml",
           "options": {
-            "sources": [],
+            "sources": [
+              {
+                "path": "./"
+              }
+            ],
             "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
       ]
+    },
+    {
+      "name": "dovima",
+      "type": "rdbms-cud",
+      "version": "0.0.0",
+      "options": {
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
+        "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+        "cleanPath": ".gdd-clean"
+      },
+      "sourceCodeFiles": []
+    },
+    {
+      "name": "startjms",
+      "type": "starter",
+      "version": "0.0.1",
+      "options": {
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
+        "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+        "cleanPath": ".gdd-clean"
+      },
+      "sourceCodeFiles": []
+    },
+    {
+      "name": "jms",
+      "type": "listener",
+      "version": "0.0.0",
+      "options": {
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
+        "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+        "cleanPath": ".gdd-clean"
+      },
+      "sourceCodeFiles": []
+    },
+    {
+      "name": "middleware",
+      "type": "middleware",
+      "version": "0.0.0",
+      "options": {
+        "sources": [
+          {
+            "path": "./"
+          }
+        ],
+        "basePath": "/home/nicosommi/workspace/nicosommi/tpipe",
+        "cleanPath": ".gdd-clean"
+      },
+      "sourceCodeFiles": []
     }
   ]
 }

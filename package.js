@@ -1,6 +1,6 @@
 /* ph replacements */
 /* name, /'name': 'tpipe'/g, 'name': 'tpipe' */
-/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.3' */
+/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.4' */
 /* description, /'description': 'a\ gdd\ utility'/g, 'description': 'piper' */
 /* main, /'main': '[a-zA-Z\.\/]+'/ig, 'main': './dist/lib/tPipe.js' */
 /* license, /MIT/g, MIT */
@@ -9,12 +9,14 @@
 /* webapp_scripts, service_scripts */
 /* webapp_dependencies, service_dependencies */
 /* webapp_devDependencies, service_devDependencies */
+/* graph_dependencies */
+/* rdbms */
 /* endph */
 
 module.exports =
 {
   'name': 'tpipe',
-  'version': '0.0.3',
+  'version': '0.0.4',
   'description': 'piper',
   'main': './dist/lib/tPipe.js',
   'standard': {
@@ -64,6 +66,11 @@ module.exports =
     /* endstamp */
     /* stamp service_dependencies */
     /* endstamp */
+    /* stamp rdbms_dependencies */
+    /* endstamp */
+    /* stamp graph_dependencies */
+    /* endstamp */
+    'cuid': '^1.3.8',
     'bluebird': '^3.3.5',
     'debug': '^2.2.0'
   },
@@ -73,17 +80,18 @@ module.exports =
     /* stamp webapp_devDependencies */
     /* endstamp */
     /* stamp lib_devDependencies */
-    'sinon': '^1.17.3',
-    'should': '^8.2.2',
-    'mocha': '^2.2.5',
     /* endstamp */
     /* stamp service_devDependencies */
     /* endstamp */
+    'sinon': '^1.17.3',
+    'should': '^8.2.2',
+    'mocha': '^2.2.5',
     'babel': '^6.5.2',
     'babel-core': '^6.6.4',
     'babel-eslint': '^3.1.30',
     'babel-plugin-rewire': '^1.0.0-rc-1',
     'babel-preset-es2015': '^6.6.0',
+    'babel-preset-stage-3': '^6.5.0',
     'gulp': '^3.9.1',
     'gulp-babel': '^6.1.2',
     'gulp-babel-istanbul': '^1.0.0',

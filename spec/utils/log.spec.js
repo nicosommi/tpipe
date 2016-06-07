@@ -1,4 +1,4 @@
-import getLogger from '../source/lib/log.js'
+import getLogger from '../../source/lib/utils/log.js'
 
 const logger = getLogger('test')
 

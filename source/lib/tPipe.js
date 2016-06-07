@@ -10,8 +10,8 @@ output
 	body
 */
 
-import { Logger } from './log.js'
-import match from './match.js'
+import { Logger } from './utils/log.js'
+import match from './utils/match.js'
 import Promise from './promise.js'
 
 const logger = new Logger('nicosommi.tPipe')
@@ -20,7 +20,7 @@ const errorMatch = Symbol('errorMatch')
 
 export function expressResponseMapping (output, input, req, res, next) {
   logger.log('expressResponse begin', {input, output})
-  res.send(output.parameters.status || 200, output.body)
+  res.status(output.parameters.status || 200).send(output.body)
   next()
   return Promise.resolve(output)
 }

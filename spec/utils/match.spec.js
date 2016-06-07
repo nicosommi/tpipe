@@ -1,4 +1,4 @@
-import match from '../source/lib/match.js'
+import match from '../../source/lib/utils/match.js'
 
 describe('match', () => {
   it('should return the property value correctly if the string matches', () => {

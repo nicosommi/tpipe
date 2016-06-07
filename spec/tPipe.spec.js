@@ -5,7 +5,8 @@ describe('TPipe', () => {
   let tPipe,
     handler,
     options,
-    sendSpy
+    sendSpy,
+    statusSpy
 
   describe('(properties)', () => {
     beforeEach(() => {
@@ -28,8 +29,13 @@ describe('TPipe', () => {
 
     beforeEach(() => {
       sendSpy = sinon.spy()
+      statusSpy = sinon.spy()
       req = {}
       res = {
+        status: (status) => {
+          statusSpy(status)
+          return res
+        },
         send: sendSpy
       }
     })
@@ -99,7 +105,11 @@ describe('TPipe', () => {
             })
 
             it('should return the output as is', () => {
-              sinon.assert.calledWith(sendSpy, 200, output)
+              sinon.assert.calledWith(sendSpy, output)
+            })
+
+            it('should return the status as is', () => {
+              sinon.assert.calledWith(statusSpy, 200)
             })
           })
 
@@ -120,7 +130,11 @@ describe('TPipe', () => {
             })
 
             it('should return the error as the body when it fails', () => {
-              sinon.assert.calledWith(sendSpy, 500, error)
+              sinon.assert.calledWith(sendSpy, error)
+            })
+
+            it('should return the status when it fails', () => {
+              sinon.assert.calledWith(statusSpy, 500)
             })
           })
         })
@@ -188,7 +202,11 @@ describe('TPipe', () => {
           })
 
           it('should use the ouput mapping if provided', () => {
-            sinon.assert.calledWith(sendSpy, 201, newOutput)
+            sinon.assert.calledWith(sendSpy, newOutput)
+          })
+
+          it('should use the status mapping if provided', () => {
+            sinon.assert.calledWith(statusSpy, 201)
           })
         })
 
@@ -219,7 +237,11 @@ describe('TPipe', () => {
           })
 
           it('should use the finally mapping if provided', () => {
-            sinon.assert.calledWith(sendSpy, 200, newOutput)
+            sinon.assert.calledWith(sendSpy, newOutput)
+          })
+
+          it('should use the status mapping if provided', () => {
+            sinon.assert.calledWith(statusSpy, 200)
           })
         })
 
@@ -239,7 +261,11 @@ describe('TPipe', () => {
             })
 
             it('should use the error matching if provided', () => {
-              sinon.assert.calledWith(sendSpy, 401, new Error('Unauthorized: access denied.'))
+              sinon.assert.calledWith(sendSpy, new Error('Unauthorized: access denied.'))
+            })
+
+            it('should use the error matching status if provided', () => {
+              sinon.assert.calledWith(statusSpy, 401)
             })
           })
 
@@ -272,7 +298,11 @@ describe('TPipe', () => {
             })
 
             it('should use the error mappings if provided', () => {
-              sinon.assert.calledWith(sendSpy, 401, expectedOutput)
+              sinon.assert.calledWith(sendSpy, expectedOutput)
+            })
+
+            it('should use the error mappings status if provided', () => {
+              sinon.assert.calledWith(statusSpy, 401)
             })
           })
         })
