@@ -28,7 +28,6 @@ describe('TPipe', () => {
     let req, res
 
     beforeEach(() => {
-      sendSpy = sinon.spy()
       statusSpy = sinon.spy()
       req = {}
       res = {
@@ -42,9 +41,11 @@ describe('TPipe', () => {
 
     describe('(open)', () => {
       it('should finish', done => {
-        return tPipe.open(req, res, () => {
+        sendSpy = sinon.spy(() => {
           done()
         })
+        res.send = sendSpy
+        return tPipe.open(req, res)
       })
 
       describe('(input handling)', () => {
@@ -54,6 +55,13 @@ describe('TPipe', () => {
           req = {
             params: {
               id: 1
+            },
+            query: {
+              pageSize: 10,
+              pageNumber: 1
+            },
+            headers: {
+              'Content-Type': 'application/json'
             },
             body: {
               data: {
@@ -84,14 +92,29 @@ describe('TPipe', () => {
           describe('(when success)', () => {
             beforeEach(done => {
               tPipe = new TPipe(handler, options)
-              tPipe.open(req, res, () => {
+              sendSpy = sinon.spy(() => {
                 done()
               })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
             it('should use the input params by default', () => {
               sinon.assert.calledWith(handler, {
                 parameters: {
-                  id: 1
+                  path: {
+                    id: 1
+                  },
+                  query: {
+                    pageSize: 10,
+                    pageNumber: 1
+                  },
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  cookies: undefined,
+                  session: undefined,
+                  user: undefined,
+                  req
                 },
                 body: {
                   data: {
@@ -124,9 +147,11 @@ describe('TPipe', () => {
                 }
               )
               tPipe = new TPipe(handler, options)
-              tPipe.open(req, res, () => {
+              sendSpy = sinon.spy(() => {
                 done()
               })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
 
             it('should return the error as the body when it fails', () => {
@@ -162,9 +187,11 @@ describe('TPipe', () => {
                 return Promise.resolve(input)
               }]
             tPipe = new TPipe(handler, options)
-            tPipe.open(req, res, () => {
+            sendSpy = sinon.spy(() => {
               done()
             })
+            res.send = sendSpy
+            tPipe.open(req, res)
           })
 
           it('should use the input mapping if provided', () => {
@@ -192,13 +219,15 @@ describe('TPipe', () => {
             },
               (currentOutput, input) => {
                 currentOutput.body.name = input.body.name
-                currentOutput.body.id = input.parameters.id
+                currentOutput.body.id = input.parameters.path.id
                 return Promise.resolve(currentOutput)
               }]
             tPipe = new TPipe(handler, options)
-            tPipe.open(req, res, () => {
+            sendSpy = sinon.spy(() => {
               done()
             })
+            res.send = sendSpy
+            tPipe.open(req, res)
           })
 
           it('should use the ouput mapping if provided', () => {
@@ -225,15 +254,17 @@ describe('TPipe', () => {
             newOutput = { id: 297, name: 'Bender' }
             options.finallyMappings = [
               (currentOutput, input) => {
-                currentOutput.body = { name: input.body.name, id: input.parameters.id }
+                currentOutput.body = { name: input.body.name, id: input.parameters.path.id }
                 return Promise.resolve(currentOutput)
               },
               expressResponseMapping
             ]
             tPipe = new TPipe(handler, options)
-            tPipe.open(req, res, () => {
+            sendSpy = sinon.spy(() => {
               done()
             })
+            res.send = sendSpy
+            tPipe.open(req, res)
           })
 
           it('should use the finally mapping if provided', () => {
@@ -255,9 +286,11 @@ describe('TPipe', () => {
                 }
               )
               tPipe = new TPipe(handler, options)
-              tPipe.open(req, res, () => {
+              sendSpy = sinon.spy(() => {
                 done()
               })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
 
             it('should use the error matching if provided', () => {
@@ -292,9 +325,11 @@ describe('TPipe', () => {
                 }
               )
               tPipe = new TPipe(handler, options)
-              tPipe.open(req, res, () => {
+              sendSpy = sinon.spy(() => {
                 done()
               })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
 
             it('should use the error mappings if provided', () => {

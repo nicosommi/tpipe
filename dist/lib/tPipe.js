@@ -46,13 +46,21 @@ var errorMatch = Symbol('errorMatch');
 function expressResponseMapping(output, input, req, res, next) {
   _get__('logger').log('expressResponse begin', { input: input, output: output });
   res.status(output.parameters.status || 200).send(output.body);
-  next();
   return _get__('Promise').resolve(output);
 }
 
 function expressRequestMapping(input, req) {
   _get__('logger').log('expressRequest begin');
-  input.parameters = req.params;
+  input.parameters = {
+    path: req.params,
+    query: req.query,
+    headers: req.headers,
+    session: req.session,
+    user: req.user,
+    cookies: req.cookies,
+    req: req // FIXME: remove this when tpipe is mature
+  };
+
   input.body = req.body;
   return _get__('Promise').resolve(input);
 }

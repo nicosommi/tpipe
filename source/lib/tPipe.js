@@ -21,13 +21,21 @@ const errorMatch = Symbol('errorMatch')
 export function expressResponseMapping (output, input, req, res, next) {
   logger.log('expressResponse begin', {input, output})
   res.status(output.parameters.status || 200).send(output.body)
-  next()
   return Promise.resolve(output)
 }
 
 export function expressRequestMapping (input, req) {
   logger.log('expressRequest begin')
-  input.parameters = req.params
+  input.parameters = {
+    path: req.params,
+    query: req.query,
+    headers: req.headers,
+    session: req.session,
+    user: req.user,
+    cookies: req.cookies,
+    req: req // FIXME: remove this when tpipe is mature
+  }
+
   input.body = req.body
   return Promise.resolve(input)
 }
