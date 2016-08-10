@@ -39,17 +39,18 @@ describe('TPipe', () => {
       (typeof tPipe.getThunk()()).should.equal('function')
     })
 
-    it('should return a function that returns a function', done => {
+    it('should return a function that returns a function', () => {
       const dispatch = () => {}
       const arg1 = { name: 'test' }
       const arg2 = 22
+      const result = { result: 2 }
       tPipe.open = function fake (...args) {
         args[0].should.deepEqual(arg1)
         args[1].should.deepEqual(arg2)
         args[2].should.deepEqual(dispatch)
-        done()
+        return result
       }
-      tPipe.getThunk()(arg1, arg2)(dispatch)
+      tPipe.getThunk()(arg1, arg2)(dispatch).should.deepEqual(result)
     })
   })
 

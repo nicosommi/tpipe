@@ -132,13 +132,13 @@ var TPipe = function () {
     value: function getThunk() {
       // utility for redux
       var self = this;
-      return function loginDoSend() {
+      return function openThunk() {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
         return function (dispatch) {
-          self.open.apply(self, args.concat(dispatch));
+          return self.open.apply(self, args.concat(dispatch));
         };
       };
     }
