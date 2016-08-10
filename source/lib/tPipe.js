@@ -117,7 +117,7 @@ export default class TPipe {
 
     logger.log('mapping message input')
     const inputPipeArgs = [].concat(args)
-    this.pipe(this.options.inputMappings, inputPipeArgs, input)
+    return this.pipe(this.options.inputMappings, inputPipeArgs, input)
       .then(handlerInput => this.handler(handlerInput))
       .then(processOutput => {
         logger.log('mapping message process output', {output})
