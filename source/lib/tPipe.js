@@ -98,7 +98,7 @@ export default class TPipe {
   }
 
   getThunk () {
-    // utility for express
+    // utility for redux
     let self = this
     return function loginDoSend (...args) {
       return (dispatch) => {

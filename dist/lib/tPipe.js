@@ -104,7 +104,7 @@ var TPipe = function () {
   }
 
   _createClass(TPipe, [{
-    key: errorMatch,
+    key: _get__('errorMatch'),
     value: function value(error) {
       _get__('logger').log('errorMatch begin');
       var status = _get__('match')(this.options.errorMatch || [], error.body.message, 500);
@@ -128,12 +128,27 @@ var TPipe = function () {
       return this.open.bind(this);
     }
   }, {
+    key: 'getThunk',
+    value: function getThunk() {
+      // utility for redux
+      var self = this;
+      return function loginDoSend() {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return function (dispatch) {
+          self.open.apply(self, args.concat(dispatch));
+        };
+      };
+    }
+  }, {
     key: 'open',
     value: function open() {
       var _this2 = this;
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
       }
 
       _get__('logger').log('processing message');
@@ -145,7 +160,7 @@ var TPipe = function () {
 
       _get__('logger').log('mapping message input');
       var inputPipeArgs = [].concat(args);
-      this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (handlerInput) {
+      return this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (handlerInput) {
         return _this2.handler(handlerInput);
       }).then(function (processOutput) {
         _get__('logger').log('mapping message process output', { output: output });
@@ -169,7 +184,10 @@ var TPipe = function () {
 }();
 
 exports.default = TPipe;
-var _RewiredData__ = {};
+
+var _RewiredData__ = Object.create(null);
+
+var INTENTIONAL_UNDEFINED = '__INTENTIONAL_UNDEFINED__';
 var _RewireAPI__ = {};
 
 (function () {
@@ -191,7 +209,17 @@ var _RewireAPI__ = {};
 })();
 
 function _get__(variableName) {
-  return _RewiredData__ === undefined || _RewiredData__[variableName] === undefined ? _get_original__(variableName) : _RewiredData__[variableName];
+  if (_RewiredData__ === undefined || _RewiredData__[variableName] === undefined) {
+    return _get_original__(variableName);
+  } else {
+    var value = _RewiredData__[variableName];
+
+    if (value === INTENTIONAL_UNDEFINED) {
+      return undefined;
+    } else {
+      return value;
+    }
+  }
 }
 
 function _get_original__(variableName) {
@@ -216,6 +244,9 @@ function _get_original__(variableName) {
 
     case 'match':
       return _match2.default;
+
+    case 'errorMatch':
+      return errorMatch;
   }
 
   return undefined;
@@ -251,7 +282,13 @@ function _set__(variableName, value) {
       _RewiredData__[name] = variableName[name];
     });
   } else {
-    return _RewiredData__[variableName] = value;
+    if (value === undefined) {
+      _RewiredData__[variableName] = INTENTIONAL_UNDEFINED;
+    } else {
+      _RewiredData__[variableName] = value;
+    }
+
+    return value;
   }
 }
 
