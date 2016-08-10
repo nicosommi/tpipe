@@ -97,6 +97,16 @@ export default class TPipe {
     return this.open.bind(this)
   }
 
+  getThunk () {
+    // utility for express
+    let self = this
+    return function loginDoSend (...args) {
+      return (dispatch) => {
+        self.open.apply(self, args.concat(dispatch))
+      }
+    }
+  }
+
   open (...args) {
     logger.log('processing message')
     let input = {

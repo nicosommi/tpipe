@@ -24,10 +24,42 @@ describe('TPipe', () => {
     })
   })
 
+  describe('(getThunk)', () => {
+    beforeEach(() => {
+      handler = sinon.spy(() => Promise.resolve({ parameters: {}, body: {} }))
+      options = {}
+      tPipe = new TPipe(handler, options)
+    })
+
+    it('should return a function', () => {
+      (typeof tPipe.getThunk()).should.equal('function')
+    })
+
+    it('should return a function that returns a function', () => {
+      (typeof tPipe.getThunk()()).should.equal('function')
+    })
+
+    it('should return a function that returns a function', done => {
+      const dispatch = () => {}
+      const arg1 = { name: 'test' }
+      const arg2 = 22
+      tPipe.open = function fake (...args) {
+        args[0].should.deepEqual(arg1)
+        args[1].should.deepEqual(arg2)
+        args[2].should.deepEqual(dispatch)
+        done()
+      }
+      tPipe.getThunk()(arg1, arg2)(dispatch)
+    })
+  })
+
   describe('(handlers)', () => {
     let req, res
 
     beforeEach(() => {
+      handler = sinon.spy(() => Promise.resolve({ parameters: {}, body: {} }))
+      options = {}
+      tPipe = new TPipe(handler, options)
       statusSpy = sinon.spy()
       req = {}
       res = {
