@@ -167,7 +167,8 @@ var TPipe = function () {
       var inputPipeArgs = [].concat(args);
       return this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (hi) {
         return input = hi;
-      }).then(function () {
+      }) // input handler (after input mappings) overrides input
+      .then(function () {
         return _this3.handler(input);
       }).then(function (processOutput) {
         _get__('logger').log('mapping message process output', { output: output });
