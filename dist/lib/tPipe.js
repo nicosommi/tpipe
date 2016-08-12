@@ -130,25 +130,30 @@ var TPipe = function () {
   }, {
     key: 'getThunk',
     value: function getThunk() {
+      var _this2 = this;
+
       // utility for redux
-      var self = this;
-      return function openThunk() {
+      return function () {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
-        return function (dispatch) {
-          return self.open.apply(self, args.concat(dispatch));
+        return function () {
+          for (var _len2 = arguments.length, more = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            more[_key2] = arguments[_key2];
+          }
+
+          return _this2.open.apply(_this2, args.concat(more));
         };
       };
     }
   }, {
     key: 'open',
     value: function open() {
-      var _this2 = this;
+      var _this3 = this;
 
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
       }
 
       _get__('logger').log('processing message');
@@ -160,22 +165,24 @@ var TPipe = function () {
 
       _get__('logger').log('mapping message input');
       var inputPipeArgs = [].concat(args);
-      return this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (handlerInput) {
-        return _this2.handler(handlerInput);
+      return this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (hi) {
+        return input = hi;
+      }).then(function () {
+        return _this3.handler(input);
       }).then(function (processOutput) {
         _get__('logger').log('mapping message process output', { output: output });
         output = processOutput;
         var outputPipeArgs = [input].concat(args);
-        return _this2.pipe(_this2.options.outputMappings, outputPipeArgs, output);
+        return _this3.pipe(_this3.options.outputMappings, outputPipeArgs, output);
       }).catch(function (error) {
         _get__('logger').log('error mapping');
         output = { parameters: {}, body: error };
         var errorPipeArgs = [input].concat(args);
-        return _this2.pipe(_this2.options.errorMappings, errorPipeArgs, output);
+        return _this3.pipe(_this3.options.errorMappings, errorPipeArgs, output);
       }).then(function () {
         _get__('logger').log('finally mapping');
         var finallyPipeArgs = [input].concat(args);
-        return _this2.pipe(_this2.options.finallyMappings, finallyPipeArgs, output);
+        return _this3.pipe(_this3.options.finallyMappings, finallyPipeArgs, output);
       });
     }
   }]);
