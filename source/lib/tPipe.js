@@ -100,8 +100,8 @@ export default class TPipe {
   getThunk () {
     // utility for redux
     return (...args) => {
-      return (dispatch) => {
-        return this.open.apply(this, args.concat(dispatch))
+      return (...more) => {
+        return this.open.apply(this, args.concat(more))
       }
     }
   }

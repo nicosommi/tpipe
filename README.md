@@ -22,7 +22,7 @@ An input handler will receive an accumulated input message, and then every argum
 A handler will receive just the input message which is the result of the input mappings and respond with a promise that resolves with an output message.  
 An output handler will receive the accumulated output message (initialized as the handler output), the input message sent to the handler, and also all the arguments sent by the current framework. The same applies to the error and the finally mappings.  
 
-Currently defaults to express (built in basic mappings).  
+Currently defaults to express (built in basic mappings) but it works as a redux thunk creator as well.  
 It supports error matching with regexes.  
 
 As this is a pipe, the order matter and the returned value on a mapping is what is sent to the next one.  
@@ -35,15 +35,43 @@ With Express
 ```javascript
 // more code...
 
-import TPipe from "tpipe"
+import TPipe, {} from "tpipe"
+const options = {
+  inputMappings: [expressRequestMapping],
+  outputMappings: [],
+  errorMappings: [expressErrorMapping],
+  finallyMappings: [expressResponseMapping]
+}
 const myPipe = new TPipe(function (input, req, res, next) {
   return Promise.resolve({ parameters: {}, body: {}})
-})
+}, options)
 
 app.get('/resouce', myPipe.getHandler())
 
 // more code...
 ```
+
+With Redux
+
+```javascript
+// more code...
+
+import TPipe from "tpipe"
+const options = {
+  inputMappings: [],
+  outputMappings: [],
+  errorMappings: [],
+  finallyMappings: []
+}
+const myPipe = new TPipe(function (input, myarg, mysecondArg, dispatch, getState) {
+  return Promise.resolve({ parameters: {}, body: {}})
+})
+
+//on the component (maybe a react component, remember that you will need redux-thunk anyway)
+dispatch(myPipe.getThunk())
+// more code...
+```
+
 <!-- endph -->
 <!-- ph howItWorks -->
 *TBD*
