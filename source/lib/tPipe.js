@@ -99,10 +99,9 @@ export default class TPipe {
 
   getThunk () {
     // utility for redux
-    let self = this
-    return function openThunk (...args) {
+    return (...args) => {
       return (dispatch) => {
-        return self.open.apply(self, args.concat(dispatch))
+        return this.open.apply(this, args.concat(dispatch))
       }
     }
   }
