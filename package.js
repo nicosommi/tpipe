@@ -1,8 +1,8 @@
 /* ph replacements */
 /* name, /'name': 'tpipe'/g, 'name': 'tpipe' */
-/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.5' */
+/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.6' */
 /* description, /'description': 'a\ gdd\ utility'/g, 'description': 'piper' */
-/* main, /'main': '[a-zA-Z\.\/]+'/ig, 'main': './dist/lib/tPipe.js' */
+/* main, /'main': '[a-zA-Z\.\/]+'/ig, 'main': './dist/lib/lib.js' */
 /* license, /MIT/g, MIT */
 /* endph */
 /* ph ignoringStamps */
@@ -16,9 +16,9 @@
 module.exports =
 {
   'name': 'tpipe',
-  'version': '0.0.5',
+  'version': '0.0.6',
   'description': 'piper',
-  'main': './dist/lib/tPipe.js',
+  'main': './dist/lib/lib.js',
   'standard': {
     'globals': [
       'describe',
@@ -76,6 +76,7 @@ module.exports =
   },
   'devDependencies': {
     /* ph componentDevDependencies */
+    'standard': '^7.1.2',
     /* endph */
     /* stamp webapp_devDependencies */
     /* endstamp */
