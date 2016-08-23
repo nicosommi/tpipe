@@ -1,4 +1,4 @@
-import TPipe, { expressRequestMapping, expressResponseMapping, expressErrorMapping } from '../source/lib/tpipe.js'
+import TPipe, { expressRequestMapping, expressResponseMapping, expressErrorMapping } from '../source/lib/tPipe.js'
 import piper from '../source/lib/piper.js'
 import should from 'should'
 

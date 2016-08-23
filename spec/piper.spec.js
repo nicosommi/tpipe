@@ -82,6 +82,10 @@ describe('TPipe', () => {
         }
         piperObj.pipe.options.should.eql(emptyOptions)
       })
+
+      it('should return the piper', () => {
+        piperObj.reset().should.equal(piperObj)
+      })
     })
   })
 })

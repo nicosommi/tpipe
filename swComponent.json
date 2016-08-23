@@ -7,7 +7,7 @@
         "path": "./"
       }
     ],
-    "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe/./",
+    "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe/./",
     "cleanPath": ".gdd-clean"
   },
   "swBlocks": [
@@ -21,7 +21,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean",
         "jsonification": [
           {
@@ -46,7 +46,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean",
             "jsonification": [
               {
@@ -71,7 +71,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean",
             "jsonification": [
               {
@@ -99,7 +99,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": [
@@ -112,7 +112,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -125,7 +125,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -138,7 +138,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -151,7 +151,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -164,7 +164,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -177,7 +177,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
@@ -193,7 +193,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": [
@@ -206,7 +206,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
@@ -222,7 +222,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": [
@@ -235,7 +235,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -248,7 +248,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -261,7 +261,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -274,7 +274,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -287,7 +287,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         },
@@ -300,7 +300,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
@@ -316,7 +316,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": [
@@ -329,7 +329,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
@@ -345,7 +345,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": [
@@ -358,7 +358,7 @@
                 "path": "./"
               }
             ],
-            "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+            "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
             "cleanPath": ".gdd-clean"
           }
         }
@@ -374,7 +374,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": []
@@ -389,7 +389,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": []
@@ -404,7 +404,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": []
@@ -419,7 +419,7 @@
             "path": "./"
           }
         ],
-        "basePath": "/Users/nicosommi/workspace/nicosommi/tpipe",
+        "basePath": "/home/nicolas/workspace/community/nicosommi/tpipe",
         "cleanPath": ".gdd-clean"
       },
       "sourceCodeFiles": []

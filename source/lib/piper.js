@@ -35,6 +35,7 @@ export class Piper {
     this.empty('outputMappings')
     this.empty('errorMappings')
     this.empty('finallyMappings')
+    return this
   }
 }
 

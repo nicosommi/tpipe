@@ -48,7 +48,8 @@ module.exports =
     'build': 'gulp build',
     'coverage': 'gulp test-coverage',
     'watch': 'gulp test-watch',
-    'gulp': 'gulp'
+    'gulp': 'gulp',
+    'posttest': 'gulp build'
   },
   'author': 'nicosommi',
   'license': 'MIT',

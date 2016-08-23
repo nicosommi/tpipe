@@ -13,11 +13,10 @@ function defineTestTask (taskName, reporters, sourceCode, spec) {
         includeUntested: true
       })) // Covering files
       .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-      .on('finish', () => {
-        let error
+      .on('finish', (error) => {
         gulp.src(spec)
           .pipe(mocha())
-          .on('error', e => (error = e))
+          .on('error', e => (error || (error = e)))
           .pipe(istanbul.writeReports({dir: `${__dirname}/../.coverage`, reporters})) // Creating the reports after tests ran
           .pipe(istanbul.enforceThresholds({ thresholds: { global: 70 } })) // Enforce a coverage of at least 90%
           .on('end', (e) => cb(e || error))

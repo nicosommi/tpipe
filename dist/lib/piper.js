@@ -80,6 +80,7 @@ var Piper = exports.Piper = function () {
       this.empty('outputMappings');
       this.empty('errorMappings');
       this.empty('finallyMappings');
+      return this;
     }
   }]);
 
