@@ -54,6 +54,55 @@ describe('TPipe', () => {
     })
   })
 
+  describe('(options)', () => {
+    let metaKey, payloadKey, inputMapping, errorMapping
+
+    beforeEach(() => {
+      metaKey = 'metaExample'
+      payloadKey = 'bodyExample'
+      handler = sinon.spy(() => Promise.reject({ [metaKey]: {}, [payloadKey]: {} }))
+      inputMapping = sinon.spy(() => Promise.resolve({ [metaKey]: {}, [payloadKey]: {} }))
+      errorMapping = sinon.spy()
+      options = {
+        inputMappings: [inputMapping],
+        errorMappings: [errorMapping],
+        finallyMappings: [],
+        metaKey,
+        payloadKey
+      }
+      tPipe = new TPipe(handler, options)
+      return tPipe.open()
+    })
+
+    describe('.metaKey and .payloadKey', () => {
+      it('should call the input mappings with the specified metaKey', () => {
+        inputMapping.getCall(0).args[0].should.have.property(metaKey)
+      })
+
+      it('should call the input mappings with the specified payloadKey', () => {
+        inputMapping.getCall(0).args[0].should.have.property(payloadKey)
+      })
+
+      // FIXME: check output mapping tests and handler mapping tests
+      // since it's a little bit tricky, because of the mappings it can be a false positive
+      it('should call the handler with the specified metaKey', () => {
+        handler.getCall(0).args[0].should.have.property(metaKey)
+      })
+
+      it('should call the handler with the specified payloadKey', () => {
+        handler.getCall(0).args[0].should.have.property(payloadKey)
+      })
+
+      it('should call the error mappings with the specified metaKey', () => {
+        errorMapping.getCall(0).args[0].should.have.property(metaKey)
+      })
+
+      it('should call the error mappings with the specified payloadKey', () => {
+        errorMapping.getCall(0).args[0].should.have.property(payloadKey)
+      })
+    })
+  })
+
   describe('(handlers)', () => {
     let req, res
 

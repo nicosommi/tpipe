@@ -1,6 +1,5 @@
 import piper from '../source/lib/piper.js'
 import TPipe from '../source/lib/tPipe.js'
-import should from 'should'
 
 describe('TPipe', () => {
   let handler
@@ -23,7 +22,7 @@ describe('TPipe', () => {
   describe('(piper)', () => {
     describe('(default)', () => {
       it('should have a tpipe', () => {
-        piperObj.pipe.constructor.should.eql(TPipe);
+        piperObj.pipe.constructor.should.eql(TPipe)
       })
 
       it('should have a tpipe with all the handler loaded', () => {
@@ -78,7 +77,9 @@ describe('TPipe', () => {
           inputMappings: [],
           outputMappings: [],
           errorMappings: [],
-          finallyMappings: []
+          finallyMappings: [],
+          metaKey: 'parameters',
+          payloadKey: 'body'
         }
         piperObj.pipe.options.should.eql(emptyOptions)
       })

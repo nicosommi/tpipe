@@ -35,6 +35,8 @@ var _promise2 = _interopRequireDefault(_promise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74,11 +76,23 @@ function expressErrorMapping(errorOutput) {
 }
 
 var TPipe = function () {
-  function TPipe(handler, options) {
+  function TPipe(handler) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
     _classCallCheck(this, TPipe);
 
     this.handler = handler;
-    this.options = options || {};
+    this.options = options;
+
+    if (!this.options.metaKey) {
+      _get__('logger').log('default meta key');
+      this.options.metaKey = 'parameters';
+    }
+
+    if (!this.options.payloadKey) {
+      _get__('logger').log('default body key');
+      this.options.payloadKey = 'body';
+    }
 
     if (!this.options.inputMappings) {
       _get__('logger').log('default input mapping');
@@ -150,18 +164,17 @@ var TPipe = function () {
   }, {
     key: 'open',
     value: function open() {
-      var _this3 = this;
+      var _input,
+          _output,
+          _this3 = this;
 
       for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
       }
 
       _get__('logger').log('processing message');
-      var input = {
-        parameters: {},
-        body: {}
-      };
-      var output = { parameters: {}, body: {} };
+      var input = (_input = {}, _defineProperty(_input, this.options.metaKey, {}), _defineProperty(_input, this.options.payloadKey, {}), _input);
+      var output = (_output = {}, _defineProperty(_output, this.options.metaKey, {}), _defineProperty(_output, this.options.payloadKey, {}), _output);
 
       _get__('logger').log('mapping message input');
       var inputPipeArgs = [].concat(args);
@@ -176,8 +189,10 @@ var TPipe = function () {
         var outputPipeArgs = [input].concat(args);
         return _this3.pipe(_this3.options.outputMappings, outputPipeArgs, output);
       }).catch(function (error) {
+        var _output2;
+
         _get__('logger').log('error mapping');
-        output = { parameters: {}, body: error };
+        output = (_output2 = {}, _defineProperty(_output2, _this3.options.metaKey, {}), _defineProperty(_output2, _this3.options.payloadKey, error), _output2);
         var errorPipeArgs = [input].concat(args);
         return _this3.pipe(_this3.options.errorMappings, errorPipeArgs, output);
       }).then(function () {

@@ -49,9 +49,19 @@ export function expressErrorMapping (errorOutput) {
 }
 
 export default class TPipe {
-  constructor (handler, options) {
+  constructor (handler, options = {}) {
     this.handler = handler
-    this.options = options || {}
+    this.options = options
+
+    if (!this.options.metaKey) {
+      logger.log('default meta key')
+      this.options.metaKey = 'parameters'
+    }
+
+    if (!this.options.payloadKey) {
+      logger.log('default body key')
+      this.options.payloadKey = 'body'
+    }
 
     if (!this.options.inputMappings) {
       logger.log('default input mapping')
@@ -109,10 +119,10 @@ export default class TPipe {
   open (...args) {
     logger.log('processing message')
     let input = {
-      parameters: {},
-      body: {}
+      [this.options.metaKey]: {},
+      [this.options.payloadKey]: {}
     }
-    let output = { parameters: {}, body: {} }
+    let output = { [this.options.metaKey]: {}, [this.options.payloadKey]: {} }
 
     logger.log('mapping message input')
     const inputPipeArgs = [].concat(args)
@@ -127,7 +137,7 @@ export default class TPipe {
       })
       .catch(error => {
         logger.log('error mapping')
-        output = { parameters: {}, body: error }
+        output = { [this.options.metaKey]: {}, [this.options.payloadKey]: error }
         const errorPipeArgs = [input].concat(args)
         return this.pipe(this.options.errorMappings, errorPipeArgs, output)
       })
