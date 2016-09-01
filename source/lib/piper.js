@@ -1,36 +1,36 @@
 import TPipe from './tPipe.js'
 
 export class Piper {
-  constructor(pipe) {
+  constructor (pipe) {
     this.pipe = pipe
   }
 
-  concatTo(key, params) {
+  concatTo (key, params) {
     this.pipe.options[key] = this.pipe.options[key].concat(params)
     return this
   }
 
-  input(...args) {
+  input (...args) {
     return this.concatTo('inputMappings', args)
   }
 
-  output(...args) {
+  output (...args) {
     return this.concatTo('outputMappings', args)
   }
 
-  error(...args) {
+  error (...args) {
     return this.concatTo('errorMappings', args)
   }
 
-  finally(...args) {
+  finally (...args) {
     return this.concatTo('finallyMappings', args)
   }
 
-  empty(key) {
+  empty (key) {
     this.pipe.options[key] = []
   }
 
-  reset() {
+  reset () {
     this.empty('inputMappings')
     this.empty('outputMappings')
     this.empty('errorMappings')
@@ -39,9 +39,10 @@ export class Piper {
   }
 }
 
-
-
-export default function piper(handler, options = {}) {
-  const pipe = new TPipe(handler, options);
-  return new Piper(pipe);
+export default function piper (handler, options = {}) {
+  const pipe = new TPipe(handler)
+  const result = new Piper(pipe)
+  result.reset()
+  Object.assign(result.pipe.options, options)
+  return result
 }

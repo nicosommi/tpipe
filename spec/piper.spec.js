@@ -14,7 +14,9 @@ describe('TPipe', () => {
       inputMappings: [aMapping],
       outputMappings: [aMapping],
       errorMappings: [aMapping],
-      finallyMappings: [aMapping]
+      finallyMappings: [aMapping],
+      metaKey: 'parameters',
+      payloadKey: 'body'
     }
     piperObj = piper(handler, options)
   })

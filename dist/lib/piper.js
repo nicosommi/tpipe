@@ -90,8 +90,11 @@ var Piper = exports.Piper = function () {
 function piper(handler) {
   var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  var pipe = new (_get__('TPipe'))(handler, options);
-  return new (_get__('Piper'))(pipe);
+  var pipe = new (_get__('TPipe'))(handler);
+  var result = new (_get__('Piper'))(pipe);
+  result.reset();
+  Object.assign(result.pipe.options, options);
+  return result;
 }
 
 var _RewiredData__ = Object.create(null);
