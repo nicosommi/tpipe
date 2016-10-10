@@ -33,7 +33,7 @@ An input mapping receives the input message to accumulate and the other argument
 ```javascript
 // value example
 function myInputMapping(input, req, res, next) {
-  return { parameters: { page: 1 }, body: { name: 'my name' } };
+  return { parameters: { page: req.query.page }, body: { name: req.body.name } };
 }
 // promise example
 function myInputMapping(input, req, res, next) {
@@ -42,12 +42,12 @@ function myInputMapping(input, req, res, next) {
 ```
 
 ### Handler
-This is your core method. It receives the input accumulated from the mappings, and all the other arguments. A handler must return a message which will be the initial value for the output mappings or reject/throw, case in which the error mappings will be triggered.
+This is your core method. It receives the input accumulated from the input mappings, and all the other arguments. A handler must return a message which will be the initial value for the output mappings or reject/throw, case in which the error mappings will be triggered.
 
 ```javascript
 // value example
 function myHandler(input, req, res, next) {
-  return { parameters: { page: 1 }, body: { name: 'my name' } };
+  return { parameters: { page: input.parameters.page }, body: { name: 'NewName', oldName: input.body.name } };
 }
 // promise example
 function myHandler(input, req, res, next) {
@@ -56,12 +56,12 @@ function myHandler(input, req, res, next) {
 ```
 
 ### Output mappers
-An output mapping receives the output message to accumulate, the input, and the other arguments received by the callee.
+An output mapping receives the output message to accumulate, the input, and the other arguments received by the callee. This mappings are triggered after the handler finishes and the initial output will be its returned value / promise resolution value.
 
 ```javascript
 // value example
 function myOutputMapping(output, input, req, res, next) {
-  return { parameters: { page: 1 }, body: { name: 'my name' } };
+  return { parameters: { page: input.parameters.page }, body: { _name: output.body.name } };
 }
 // promise example
 function myOutputMapping(output, input, req, res, next) {
@@ -70,12 +70,12 @@ function myOutputMapping(output, input, req, res, next) {
 ```
 
 ### Error mappers
-An error mapping receives the error message to accumulate, the input, and the other arguments received by the callee.
+An error mapping receives the error message to accumulate initialized with a message with the error object on the body section, the input, and the other arguments received by the callee. It is triggered when some other mapping throws an error or reject the returned promise.
 
 ```javascript
 // value example
 function myErrorMapping(error, input, req, res, next) {
-  return { parameters: { page: 1 }, body: { name: 'my name' } };
+  return { parameters: {}, body: { newError: new Error('My error'), originalError: error.body } };
 }
 // promise example
 function myErrorMapping(error, input, req, res, next) {
@@ -84,12 +84,13 @@ function myErrorMapping(error, input, req, res, next) {
 ```
 
 ### Finally mappers
-A finally mapping receives the output/error message accumulated, the input, and the other arguments received by the callee.
+A finally mapping receives the output/error message accumulated, the input, and the other arguments received by the callee. It is triggered on both scenarios, after the output mappings but also after the error mappings.
 
 ```javascript
 // value example
 function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
-  return { parameters: { page: 1 }, body: { name: 'my name' } };
+  res.status(200).send(outputOrErrorMessage)
+  next()
 }
 // promise example
 function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
@@ -97,8 +98,8 @@ function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
 }
 ```
 
-Currently defaults to express (built in basic mappings) but it works as a redux thunk as well.  
-It supports error matching with regexes.  
+Currently defaults to express (built in basic mappings).
+It supports error matching to values with regexes.
 
 <!-- endph -->
 
