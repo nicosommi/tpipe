@@ -33,6 +33,29 @@ var Piper = exports.Piper = function () {
       return this;
     }
   }, {
+    key: 'incorporate',
+    value: function incorporate(_ref) {
+      var _this = this;
+
+      var inputMappings = _ref.inputMappings;
+      var outputMappings = _ref.outputMappings;
+      var finallyMappings = _ref.finallyMappings;
+      var errorMappings = _ref.errorMappings;
+      var _ref$extraProperties = _ref.extraProperties;
+      var extraProperties = _ref$extraProperties === undefined ? {} : _ref$extraProperties;
+
+      this.input.apply(this, inputMappings);
+      this.output.apply(this, outputMappings);
+      this.finally.apply(this, finallyMappings);
+      this.error.apply(this, errorMappings);
+      Object.keys(extraProperties).forEach(function (key) {
+        Object.defineProperty(_this.pipe, key, {
+          value: extraProperties[key]
+        });
+      });
+      return this;
+    }
+  }, {
     key: 'input',
     value: function input() {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {

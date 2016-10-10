@@ -1,11 +1,25 @@
-import {
+import defaultSet, {
   requestInputMapping,
   sendResponseFinallyMapping,
-  statusErrorMapping
+  statusErrorMapping,
+  getHandler
 } from '../source/lib/tPipeExpress.js'
 import sinon, { spy } from 'sinon'
 
 describe('tpipe express', () => {
+  describe('mapping set', () => {
+    it('should expose a default mapping set', () => {
+      defaultSet.should.eql({
+        inputMappings: [requestInputMapping],
+        finallyMappings: [sendResponseFinallyMapping],
+        errorMappings: [statusErrorMapping],
+        extraProperties: {
+          getHandler
+        }
+      })
+    })
+  })
+
   describe('input mappings', () => {
     let req
 

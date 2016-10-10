@@ -10,6 +10,25 @@ export class Piper {
     return this
   }
 
+  incorporate ({ inputMappings, outputMappings, finallyMappings, errorMappings, extraProperties = {} }) {
+    this.input.apply(this, inputMappings)
+    this.output.apply(this, outputMappings)
+    this.finally.apply(this, finallyMappings)
+    this.error.apply(this, errorMappings)
+    Object.keys(extraProperties).forEach(
+      key => {
+        Object.defineProperty(
+          this.pipe,
+          key,
+          {
+            value: extraProperties[key]
+          }
+        )
+      }
+    )
+    return this
+  }
+
   input (...args) {
     return this.concatTo('inputMappings', args)
   }

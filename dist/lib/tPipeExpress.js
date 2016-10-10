@@ -10,6 +10,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.requestInputMapping = requestInputMapping;
 exports.sendResponseFinallyMapping = sendResponseFinallyMapping;
 exports.statusErrorMapping = statusErrorMapping;
+exports.getHandler = getHandler;
 
 var _log = require('./utils/log.js');
 
@@ -50,6 +51,21 @@ function statusErrorMapping(errorOutput) {
   }
   return _get__('Promise').resolve(errorOutput);
 }
+
+function getHandler() {
+  return this.open.bind(this);
+}
+
+var defaultSet = {
+  inputMappings: [_get__('requestInputMapping')],
+  errorMappings: [_get__('statusErrorMapping')],
+  finallyMappings: [_get__('sendResponseFinallyMapping')],
+  extraProperties: {
+    getHandler: _get__('getHandler')
+  }
+};
+
+exports.default = _get__('defaultSet');
 
 var _RewiredData__ = Object.create(null);
 
@@ -98,6 +114,21 @@ function _get_original__(variableName) {
 
     case 'Promise':
       return _promise2.default;
+
+    case 'requestInputMapping':
+      return requestInputMapping;
+
+    case 'statusErrorMapping':
+      return statusErrorMapping;
+
+    case 'sendResponseFinallyMapping':
+      return sendResponseFinallyMapping;
+
+    case 'getHandler':
+      return getHandler;
+
+    case 'defaultSet':
+      return defaultSet;
   }
 
   return undefined;
@@ -176,10 +207,30 @@ function _with__(object) {
   };
 }
 
+var _typeOfOriginalExport = typeof defaultSet === 'undefined' ? 'undefined' : _typeof(defaultSet);
+
+function addNonEnumerableProperty(name, value) {
+  Object.defineProperty(defaultSet, name, {
+    value: value,
+    enumerable: false,
+    configurable: true
+  });
+}
+
+if ((_typeOfOriginalExport === 'object' || _typeOfOriginalExport === 'function') && Object.isExtensible(defaultSet)) {
+  addNonEnumerableProperty('__get__', _get__);
+  addNonEnumerableProperty('__GetDependency__', _get__);
+  addNonEnumerableProperty('__Rewire__', _set__);
+  addNonEnumerableProperty('__set__', _set__);
+  addNonEnumerableProperty('__reset__', _reset__);
+  addNonEnumerableProperty('__ResetDependency__', _reset__);
+  addNonEnumerableProperty('__with__', _with__);
+  addNonEnumerableProperty('__RewireAPI__', _RewireAPI__);
+}
+
 exports.__get__ = _get__;
 exports.__GetDependency__ = _get__;
 exports.__Rewire__ = _set__;
 exports.__set__ = _set__;
 exports.__ResetDependency__ = _reset__;
 exports.__RewireAPI__ = _RewireAPI__;
-exports.default = _RewireAPI__;

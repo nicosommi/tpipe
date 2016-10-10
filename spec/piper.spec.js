@@ -90,5 +90,87 @@ describe('TPipe', () => {
         piperObj.reset().should.equal(piperObj)
       })
     })
+
+    describe('(incorporate)', () => {
+      it('should incorporate input mappings from a mapping set', () => {
+        piperObj.reset()
+        const inputMappings = [
+          () => 1,
+          () => 2
+        ]
+        const mappingSet = {
+          inputMappings
+        }
+        piperObj.incorporate(mappingSet)
+          .pipe.options.inputMappings.should.eql(inputMappings)
+      })
+
+      it('should incorporate output mappings from a mapping set', () => {
+        piperObj.reset()
+        const outputMappings = [
+          () => 1,
+          () => 2
+        ]
+        const mappingSet = {
+          outputMappings
+        }
+        piperObj.incorporate(mappingSet)
+          .pipe.options.outputMappings.should.eql(outputMappings)
+      })
+
+      it('should incorporate finally mappings from a mapping set', () => {
+        piperObj.reset()
+        const finallyMappings = [
+          () => 1,
+          () => 2
+        ]
+        const mappingSet = {
+          finallyMappings
+        }
+        piperObj.incorporate(mappingSet)
+          .pipe.options.finallyMappings.should.eql(finallyMappings)
+      })
+
+      it('should incorporate error mappings from a mapping set', () => {
+        piperObj.reset()
+        const errorMappings = [
+          () => 1,
+          () => 2
+        ]
+        const mappingSet = {
+          errorMappings
+        }
+        piperObj.incorporate(mappingSet)
+          .pipe.options.errorMappings.should.eql(errorMappings)
+      })
+
+      describe('(extra properties)', () => {
+        it('should incorporate extra methods from a mapping set', () => {
+          piperObj.reset()
+          const extraProperties = {
+            myMethod: function myMethodName () {}
+          }
+          const mappingSet = {
+            extraProperties
+          }
+          piperObj.incorporate(mappingSet)
+            .pipe.should.have.property('myMethod')
+        })
+
+        it('should bind the pipe to an extra method from a mapping set', () => {
+          piperObj.reset()
+          const extraProperties = {
+            myMethod: function myMethodName () {
+              this.should.equal(piperObj.pipe)
+            }
+          }
+          const mappingSet = {
+            extraProperties
+          }
+          piperObj.incorporate(mappingSet)
+            .pipe.myMethod()
+        })
+      })
+    })
   })
 })

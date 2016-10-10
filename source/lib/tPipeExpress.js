@@ -32,3 +32,18 @@ export function statusErrorMapping (errorOutput) {
   }
   return Promise.resolve(errorOutput)
 }
+
+export function getHandler () {
+  return this.open.bind(this)
+}
+
+const defaultSet = {
+  inputMappings: [requestInputMapping],
+  errorMappings: [statusErrorMapping],
+  finallyMappings: [sendResponseFinallyMapping],
+  extraProperties: {
+    getHandler
+  }
+}
+
+export default defaultSet
