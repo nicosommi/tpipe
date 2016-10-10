@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = match;
 function match() {
-  var source = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  var source = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var stringValue = arguments[1];
-  var fallBack = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+  var fallBack = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
   var sourceKey = source.find(function (value) {
     if (value.key instanceof RegExp) {

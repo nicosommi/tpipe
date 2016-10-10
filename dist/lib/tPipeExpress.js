@@ -3,51 +3,53 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.__RewireAPI__ = exports.__ResetDependency__ = exports.__set__ = exports.__Rewire__ = exports.__GetDependency__ = exports.__get__ = exports.Logger = undefined;
+exports.__RewireAPI__ = exports.__ResetDependency__ = exports.__set__ = exports.__Rewire__ = exports.__GetDependency__ = exports.__get__ = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.requestInputMapping = requestInputMapping;
+exports.sendResponseFinallyMapping = sendResponseFinallyMapping;
+exports.statusErrorMapping = statusErrorMapping;
 
-exports.default = getLogger;
+var _log = require('./utils/log.js');
 
-var _debug = require('debug');
+var _promise = require('./promise.js');
 
-var _debug2 = _interopRequireDefault(_debug);
+var _promise2 = _interopRequireDefault(_promise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var logger = new (_get__('Logger'))('nicosommi.tPipeExpress');
 
-function getLogger(logger) {
-  return new (_get__('Logger'))(logger);
+function requestInputMapping(input, req) {
+  _get__('logger').log('tpipe-express input mapping begin');
+  input.parameters = {
+    path: req.params,
+    query: req.query,
+    headers: req.headers,
+    session: req.session,
+    user: req.user,
+    cookies: req.cookies,
+    req: req // FIXME: remove this when tpipe is mature
+  };
+
+  input.body = req.body;
+  return _get__('Promise').resolve(input);
 }
 
-var Logger = exports.Logger = function () {
-  function Logger(namespace) {
-    _classCallCheck(this, Logger);
+function sendResponseFinallyMapping(output, input, req, res, next) {
+  _get__('logger').log('tpipe-express finally mapping begin', { input: input, output: output });
+  res.status(output.parameters.status || 200).send(output.body);
+  return _get__('Promise').resolve(output);
+}
 
-    this.debug = _get__('debug')(namespace);
+function statusErrorMapping(errorOutput) {
+  _get__('logger').log('tpipe-express error mapping begin');
+  if (!errorOutput.parameters.status) {
+    errorOutput.parameters.status = 500;
   }
-
-  _createClass(Logger, [{
-    key: 'log',
-    value: function log() {
-      var _this = this;
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return new Promise(function (resolve) {
-        _this.debug.apply(_this, args);
-        resolve(args);
-      });
-    }
-  }]);
-
-  return Logger;
-}();
+  return _get__('Promise').resolve(errorOutput);
+}
 
 var _RewiredData__ = Object.create(null);
 
@@ -89,10 +91,13 @@ function _get__(variableName) {
 function _get_original__(variableName) {
   switch (variableName) {
     case 'Logger':
-      return Logger;
+      return _log.Logger;
 
-    case 'debug':
-      return _debug2.default;
+    case 'logger':
+      return logger;
+
+    case 'Promise':
+      return _promise2.default;
   }
 
   return undefined;
@@ -171,30 +176,10 @@ function _with__(object) {
   };
 }
 
-var _typeOfOriginalExport = typeof getLogger === 'undefined' ? 'undefined' : _typeof(getLogger);
-
-function addNonEnumerableProperty(name, value) {
-  Object.defineProperty(getLogger, name, {
-    value: value,
-    enumerable: false,
-    configurable: true
-  });
-}
-
-if ((_typeOfOriginalExport === 'object' || _typeOfOriginalExport === 'function') && Object.isExtensible(getLogger)) {
-  addNonEnumerableProperty('__get__', _get__);
-  addNonEnumerableProperty('__GetDependency__', _get__);
-  addNonEnumerableProperty('__Rewire__', _set__);
-  addNonEnumerableProperty('__set__', _set__);
-  addNonEnumerableProperty('__reset__', _reset__);
-  addNonEnumerableProperty('__ResetDependency__', _reset__);
-  addNonEnumerableProperty('__with__', _with__);
-  addNonEnumerableProperty('__RewireAPI__', _RewireAPI__);
-}
-
 exports.__get__ = _get__;
 exports.__GetDependency__ = _get__;
 exports.__Rewire__ = _set__;
 exports.__set__ = _set__;
 exports.__ResetDependency__ = _reset__;
 exports.__RewireAPI__ = _RewireAPI__;
+exports.default = _RewireAPI__;

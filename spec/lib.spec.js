@@ -1,13 +1,18 @@
-import TPipe, { expressRequestMapping, expressResponseMapping, expressErrorMapping } from '../source/lib/tPipe.js'
+import TPipe from '../source/lib/tPipe.js'
+import {
+  requestInputMapping,
+  sendResponseFinallyMapping,
+  statusErrorMapping
+} from '../source/lib/tPipeExpress.js'
 import piper from '../source/lib/piper.js'
 
 describe('lib', () => {
   const expectedExportedObject = {
     default: TPipe,
     piper,
-    expressErrorMapping,
-    expressRequestMapping,
-    expressResponseMapping
+    statusErrorMapping,
+    requestInputMapping,
+    sendResponseFinallyMapping
   }
 
   Object.keys(expectedExportedObject).forEach(

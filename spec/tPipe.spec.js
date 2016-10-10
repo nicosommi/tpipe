@@ -1,4 +1,4 @@
-import TPipe, { expressResponseMapping, expressErrorMapping } from '../source/lib/tPipe.js'
+import TPipe from '../source/lib/tPipe.js'
 import sinon from 'sinon'
 
 describe('TPipe', () => {
@@ -247,114 +247,234 @@ describe('TPipe', () => {
         })
 
         describe('(when input mappings)', () => {
-          let newInput
+          describe('(and all are correct)', () => {
+            let newInput
 
-          beforeEach(done => {
-            req = {
-              params: {
-                id: 297
-              },
-              body: {
-                name: 'Bender'
+            beforeEach(done => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
               }
-            }
-            newInput = { parameters: {}, body: { id: 298, name: 'Fry' } }
-            options.inputMappings = [input => {
-              delete input.parameters.id
-              input.body.id = 298
-              return Promise.resolve(input)
-            },
-              input => {
-                input.body.name = 'Fry'
-                return Promise.resolve(input)
-              }]
-            tPipe = new TPipe(handler, options)
-            sendSpy = sinon.spy(() => {
-              done()
+              newInput = { parameters: {}, body: { id: 298, name: 'Fry' } }
+              options.inputMappings = [
+                input => {
+                  delete input.parameters.id
+                  input.body.id = 298
+                  return Promise.resolve(input)
+                },
+                input => {
+                  input.body.name = 'Fry'
+                  return Promise.resolve(input)
+                }
+              ]
+              tPipe = new TPipe(handler, options)
+              sendSpy = sinon.spy(() => {
+                done()
+              })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
-            res.send = sendSpy
-            tPipe.open(req, res)
+
+            it('should use the input mapping if provided', () => {
+              sinon.assert.calledWith(handler, newInput)
+            })
           })
 
-          it('should use the input mapping if provided', () => {
-            sinon.assert.calledWith(handler, newInput)
+          describe('(and there are undefined mappers)', () => {
+            let errorSpy
+
+            beforeEach(() => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
+              }
+              options.inputMappings = [
+                input => Promise.resolve(input),
+                undefined
+              ]
+
+              errorSpy = sinon.spy()
+              options.errorMappings = [
+                errorSpy
+              ]
+
+              res.send = sinon.spy()
+              tPipe = new TPipe(handler, options)
+              return tPipe.open(req, res)
+            })
+
+            it('should throw a descriptive error', () => {
+              sinon.assert.calledWith(errorSpy,
+                { parameters: {}, body: new Error('Invalid mapping received') },
+                { parameters: {}, body: {} },
+                req,
+                res
+              )
+            })
           })
         })
 
         describe('(when ouput mappings)', () => {
-          let newOutput
+          describe('(when all mappings are correct)', () => {
+            let newOutput
 
-          beforeEach(done => {
-            req = {
-              params: {
-                id: 297
-              },
-              body: {
-                name: 'Bender'
+            beforeEach(done => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
               }
-            }
-            newOutput = { id: 297, name: 'Bender', cuid: 'asjhghh388' }
-            options.outputMappings = [(currentOutput, input) => {
-              currentOutput.parameters.status = 201
-              currentOutput.body = { cuid: 'asjhghh388' }
-              return Promise.resolve(currentOutput)
-            },
-              (currentOutput, input) => {
-                currentOutput.body.name = input.body.name
-                currentOutput.body.id = input.parameters.path.id
+              newOutput = { id: 297, name: 'Bender', cuid: 'asjhghh388' }
+              options.outputMappings = [(currentOutput, input) => {
+                currentOutput.parameters.status = 201
+                currentOutput.body = { cuid: 'asjhghh388' }
                 return Promise.resolve(currentOutput)
-              }]
-            tPipe = new TPipe(handler, options)
-            sendSpy = sinon.spy(() => {
-              done()
+              },
+                (currentOutput, input) => {
+                  currentOutput.body.name = input.body.name
+                  currentOutput.body.id = input.parameters.path.id
+                  return Promise.resolve(currentOutput)
+                }]
+              tPipe = new TPipe(handler, options)
+              sendSpy = sinon.spy(() => {
+                done()
+              })
+              res.send = sendSpy
+              tPipe.open(req, res)
             })
-            res.send = sendSpy
-            tPipe.open(req, res)
+
+            it('should use the ouput mapping if provided', () => {
+              sinon.assert.calledWith(sendSpy, newOutput)
+            })
+
+            it('should use the status mapping if provided', () => {
+              sinon.assert.calledWith(statusSpy, 201)
+            })
           })
 
-          it('should use the ouput mapping if provided', () => {
-            sinon.assert.calledWith(sendSpy, newOutput)
-          })
+          describe('(and there are undefined mappers)', () => {
+            let errorSpy
 
-          it('should use the status mapping if provided', () => {
-            sinon.assert.calledWith(statusSpy, 201)
+            beforeEach(() => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
+              }
+              options.inputMappings = []
+
+              options.outputMappings = [
+                output => Promise.resolve(output),
+                undefined
+              ]
+
+              errorSpy = sinon.spy()
+              options.errorMappings = [
+                errorSpy
+              ]
+
+              res.send = sinon.spy()
+              tPipe = new TPipe(handler, options)
+              return tPipe.open(req, res)
+            })
+
+            it('should throw a descriptive error', () => {
+              sinon.assert.calledWith(errorSpy,
+                { parameters: {}, body: new Error('Invalid output mapping received at position 1') },
+                { parameters: {}, body: {} },
+                req,
+                res
+              )
+            })
           })
         })
 
         describe('(when finally mappings)', () => {
-          let newOutput
+          describe('(when all mappings are correct)', () => {
+            let newOutput
 
-          beforeEach(done => {
-            req = {
-              params: {
-                id: 297
-              },
-              body: {
-                name: 'Bender'
+            beforeEach(done => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
               }
-            }
-            newOutput = { id: 297, name: 'Bender' }
-            options.finallyMappings = [
-              (currentOutput, input) => {
-                currentOutput.body = { name: input.body.name, id: input.parameters.path.id }
-                return Promise.resolve(currentOutput)
-              },
-              expressResponseMapping
-            ]
-            tPipe = new TPipe(handler, options)
-            sendSpy = sinon.spy(() => {
-              done()
+              newOutput = { id: 297, name: 'Bender' }
+              sendSpy = sinon.spy(() => {
+                done()
+              })
+              res.send = sendSpy
+              options.finallyMappings = [
+                (currentOutput, input) => {
+                  currentOutput.body = { name: input.body.name, id: input.parameters.path.id }
+                  statusSpy(200)
+                  sendSpy(currentOutput.body)
+                  return Promise.resolve(currentOutput)
+                }
+              ]
+              tPipe = new TPipe(handler, options)
+              tPipe.open(req, res)
             })
-            res.send = sendSpy
-            tPipe.open(req, res)
+
+            it('should use the finally mapping if provided', () => {
+              sinon.assert.calledWith(sendSpy, newOutput)
+            })
+
+            it('should use the status mapping if provided', () => {
+              sinon.assert.calledWith(statusSpy, 200)
+            })
           })
 
-          it('should use the finally mapping if provided', () => {
-            sinon.assert.calledWith(sendSpy, newOutput)
-          })
+          describe('(and there are undefined mappers)', () => {
+            let errorSpy
 
-          it('should use the status mapping if provided', () => {
-            sinon.assert.calledWith(statusSpy, 200)
+            beforeEach(() => {
+              req = {
+                params: {
+                  id: 297
+                },
+                body: {
+                  name: 'Bender'
+                }
+              }
+              options.inputMappings = []
+              options.outputMappings = []
+
+              options.finallyMappings = [
+                output => Promise.resolve(output),
+                undefined
+              ]
+
+              errorSpy = sinon.spy()
+              options.errorMappings = [
+                errorSpy
+              ]
+
+              res.send = sinon.spy()
+              tPipe = new TPipe(handler, options)
+            })
+
+            it('should throw a descriptive error', () => {
+              return tPipe.open(req, res)
+                .should.be.rejectedWith(/Invalid finally mapping received at position 1/)
+            })
           })
         })
 
@@ -386,40 +506,41 @@ describe('TPipe', () => {
 
           describe('(when custom error mapping)', () => {
             let date,
-              expectedOutput
+              expectedOutput,
+              errorMappingSpy
 
             beforeEach(done => {
               date = new Date()
+              errorMappingSpy = sinon.spy(() => {
+                done()
+              })
+              res.send = sinon.spy()
               expectedOutput = { error: "Sorry we can't tell you what's happenning here.", date }
-              options.errorMappings = [(errorOutput) => {
-                errorOutput.parameters.status = 401
-                errorOutput.body = { error: "Sorry we can't tell you what's happenning here." }
-                return Promise.resolve(errorOutput)
-              },
+              options.errorMappings = [
+                (errorOutput) => {
+                  errorOutput.parameters.status = 401
+                  errorOutput.body = { error: "Sorry we can't tell you what's happenning here." }
+                  return Promise.resolve(errorOutput)
+                },
                 (errorOutput) => {
                   errorOutput.body.date = date
                   return Promise.resolve(errorOutput)
                 },
-                expressErrorMapping]
-              handler = sinon.spy(
-                () => {
-                  return Promise.reject(new Error('Unauthorized: access denied.'))
-                }
-              )
+                (output) => errorMappingSpy(output)
+              ]
+              handler = sinon.spy(() => Promise.reject(new Error('Unauthorized: access denied.')))
               tPipe = new TPipe(handler, options)
-              sendSpy = sinon.spy(() => {
-                done()
-              })
-              res.send = sendSpy
               tPipe.open(req, res)
             })
 
             it('should use the error mappings if provided', () => {
-              sinon.assert.calledWith(sendSpy, expectedOutput)
-            })
-
-            it('should use the error mappings status if provided', () => {
-              sinon.assert.calledWith(statusSpy, 401)
+              const expectedMessage = {
+                parameters: {
+                  status: 401
+                },
+                body: expectedOutput
+              }
+              sinon.assert.calledWith(errorMappingSpy, expectedMessage)
             })
           })
         })

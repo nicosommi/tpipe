@@ -13,40 +13,15 @@ output
 import { Logger } from './utils/log.js'
 import match from './utils/match.js'
 import Promise from './promise.js'
+import {
+  requestInputMapping,
+  sendResponseFinallyMapping,
+  statusErrorMapping
+} from './tPipeExpress.js'
 
 const logger = new Logger('nicosommi.tPipe')
 
 const errorMatch = Symbol('errorMatch')
-
-export function expressResponseMapping (output, input, req, res, next) {
-  logger.log('expressResponse begin', {input, output})
-  res.status(output.parameters.status || 200).send(output.body)
-  return Promise.resolve(output)
-}
-
-export function expressRequestMapping (input, req) {
-  logger.log('expressRequest begin')
-  input.parameters = {
-    path: req.params,
-    query: req.query,
-    headers: req.headers,
-    session: req.session,
-    user: req.user,
-    cookies: req.cookies,
-    req: req // FIXME: remove this when tpipe is mature
-  }
-
-  input.body = req.body
-  return Promise.resolve(input)
-}
-
-export function expressErrorMapping (errorOutput) {
-  logger.log('expressError begin')
-  if (!errorOutput.parameters.status) {
-    errorOutput.parameters.status = 500
-  }
-  return Promise.resolve(errorOutput)
-}
 
 export default class TPipe {
   constructor (handler, options = {}) {
@@ -65,7 +40,7 @@ export default class TPipe {
 
     if (!this.options.inputMappings) {
       logger.log('default input mapping')
-      this.options.inputMappings = [expressRequestMapping]
+      this.options.inputMappings = [requestInputMapping]
     }
 
     if (!this.options.outputMappings) {
@@ -75,14 +50,14 @@ export default class TPipe {
 
     if (!this.options.finallyMappings) {
       logger.log('default finally mapping')
-      this.options.finallyMappings = [expressResponseMapping]
+      this.options.finallyMappings = [sendResponseFinallyMapping]
     }
 
     if (!this.options.errorMappings && !this.options.errorMatch) {
       logger.log('default error mapping')
-      this.options.errorMappings = [expressErrorMapping]
+      this.options.errorMappings = [statusErrorMapping]
     } else if (!this.options.errorMappings && this.options.errorMatch) {
-      this.options.errorMappings = [this[errorMatch], expressErrorMapping]
+      this.options.errorMappings = [this[errorMatch], statusErrorMapping]
     }
   }
 
@@ -94,9 +69,13 @@ export default class TPipe {
     return Promise.resolve(error)
   }
 
-  pipe (array, functionArgs, output) {
+  pipe (array, functionArgs, output, description = 'default') {
     return Promise.reduce(array,
-      (accumulator, currentElement) => {
+      (accumulator, currentElement, index) => {
+        if (!currentElement) {
+          logger.log('Invalid mapping detected')
+          throw new Error(`Invalid ${description} mapping received at position ${index}`)
+        }
         return currentElement.call(this, accumulator, ...functionArgs)
       },
       output)
@@ -126,25 +105,25 @@ export default class TPipe {
 
     logger.log('mapping message input')
     const inputPipeArgs = [].concat(args)
-    return this.pipe(this.options.inputMappings, inputPipeArgs, input)
+    return this.pipe(this.options.inputMappings, inputPipeArgs, input, 'input')
       .then(hi => (input = hi)) // input handler (after input mappings) overrides input
       .then(() => this.handler(input))
       .then(processOutput => {
         logger.log('mapping message process output', {output})
         output = processOutput
         const outputPipeArgs = [input].concat(args)
-        return this.pipe(this.options.outputMappings, outputPipeArgs, output)
+        return this.pipe(this.options.outputMappings, outputPipeArgs, output, 'output')
       })
       .catch(error => {
         logger.log('error mapping')
         output = { [this.options.metaKey]: {}, [this.options.payloadKey]: error }
         const errorPipeArgs = [input].concat(args)
-        return this.pipe(this.options.errorMappings, errorPipeArgs, output)
+        return this.pipe(this.options.errorMappings, errorPipeArgs, output, 'error')
       })
       .then(() => {
         logger.log('finally mapping')
         const finallyPipeArgs = [input].concat(args)
-        return this.pipe(this.options.finallyMappings, finallyPipeArgs, output)
+        return this.pipe(this.options.finallyMappings, finallyPipeArgs, output, 'finally')
       })
   }
 }

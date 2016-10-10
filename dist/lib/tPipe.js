@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.__RewireAPI__ = exports.__ResetDependency__ = exports.__set__ = exports.__Rewire__ = exports.__GetDependency__ = exports.__get__ = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      It aims to support both http and amqp requests while doing some cross cutting concern
@@ -19,10 +19,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      	body
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-exports.expressResponseMapping = expressResponseMapping;
-exports.expressRequestMapping = expressRequestMapping;
-exports.expressErrorMapping = expressErrorMapping;
-
 var _log = require('./utils/log.js');
 
 var _match = require('./utils/match.js');
@@ -32,6 +28,8 @@ var _match2 = _interopRequireDefault(_match);
 var _promise = require('./promise.js');
 
 var _promise2 = _interopRequireDefault(_promise);
+
+var _tPipeExpress = require('./tPipeExpress.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45,39 +43,9 @@ var logger = new (_get__('Logger'))('nicosommi.tPipe');
 
 var errorMatch = Symbol('errorMatch');
 
-function expressResponseMapping(output, input, req, res, next) {
-  _get__('logger').log('expressResponse begin', { input: input, output: output });
-  res.status(output.parameters.status || 200).send(output.body);
-  return _get__('Promise').resolve(output);
-}
-
-function expressRequestMapping(input, req) {
-  _get__('logger').log('expressRequest begin');
-  input.parameters = {
-    path: req.params,
-    query: req.query,
-    headers: req.headers,
-    session: req.session,
-    user: req.user,
-    cookies: req.cookies,
-    req: req // FIXME: remove this when tpipe is mature
-  };
-
-  input.body = req.body;
-  return _get__('Promise').resolve(input);
-}
-
-function expressErrorMapping(errorOutput) {
-  _get__('logger').log('expressError begin');
-  if (!errorOutput.parameters.status) {
-    errorOutput.parameters.status = 500;
-  }
-  return _get__('Promise').resolve(errorOutput);
-}
-
 var TPipe = function () {
   function TPipe(handler) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, TPipe);
 
@@ -96,7 +64,7 @@ var TPipe = function () {
 
     if (!this.options.inputMappings) {
       _get__('logger').log('default input mapping');
-      this.options.inputMappings = [_get__('expressRequestMapping')];
+      this.options.inputMappings = [_get__('requestInputMapping')];
     }
 
     if (!this.options.outputMappings) {
@@ -106,14 +74,14 @@ var TPipe = function () {
 
     if (!this.options.finallyMappings) {
       _get__('logger').log('default finally mapping');
-      this.options.finallyMappings = [_get__('expressResponseMapping')];
+      this.options.finallyMappings = [_get__('sendResponseFinallyMapping')];
     }
 
     if (!this.options.errorMappings && !this.options.errorMatch) {
       _get__('logger').log('default error mapping');
-      this.options.errorMappings = [_get__('expressErrorMapping')];
+      this.options.errorMappings = [_get__('statusErrorMapping')];
     } else if (!this.options.errorMappings && this.options.errorMatch) {
-      this.options.errorMappings = [this[errorMatch], _get__('expressErrorMapping')];
+      this.options.errorMappings = [this[errorMatch], _get__('statusErrorMapping')];
     }
   }
 
@@ -131,7 +99,13 @@ var TPipe = function () {
     value: function pipe(array, functionArgs, output) {
       var _this = this;
 
-      return _get__('Promise').reduce(array, function (accumulator, currentElement) {
+      var description = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'default';
+
+      return _get__('Promise').reduce(array, function (accumulator, currentElement, index) {
+        if (!currentElement) {
+          _get__('logger').log('Invalid mapping detected');
+          throw new Error('Invalid ' + description + ' mapping received at position ' + index);
+        }
         return currentElement.call.apply(currentElement, [_this, accumulator].concat(_toConsumableArray(functionArgs)));
       }, output);
     }
@@ -178,7 +152,7 @@ var TPipe = function () {
 
       _get__('logger').log('mapping message input');
       var inputPipeArgs = [].concat(args);
-      return this.pipe(this.options.inputMappings, inputPipeArgs, input).then(function (hi) {
+      return this.pipe(this.options.inputMappings, inputPipeArgs, input, 'input').then(function (hi) {
         return input = hi;
       }) // input handler (after input mappings) overrides input
       .then(function () {
@@ -187,18 +161,18 @@ var TPipe = function () {
         _get__('logger').log('mapping message process output', { output: output });
         output = processOutput;
         var outputPipeArgs = [input].concat(args);
-        return _this3.pipe(_this3.options.outputMappings, outputPipeArgs, output);
+        return _this3.pipe(_this3.options.outputMappings, outputPipeArgs, output, 'output');
       }).catch(function (error) {
         var _output2;
 
         _get__('logger').log('error mapping');
         output = (_output2 = {}, _defineProperty(_output2, _this3.options.metaKey, {}), _defineProperty(_output2, _this3.options.payloadKey, error), _output2);
         var errorPipeArgs = [input].concat(args);
-        return _this3.pipe(_this3.options.errorMappings, errorPipeArgs, output);
+        return _this3.pipe(_this3.options.errorMappings, errorPipeArgs, output, 'error');
       }).then(function () {
         _get__('logger').log('finally mapping');
         var finallyPipeArgs = [input].concat(args);
-        return _this3.pipe(_this3.options.finallyMappings, finallyPipeArgs, output);
+        return _this3.pipe(_this3.options.finallyMappings, finallyPipeArgs, output, 'finally');
       });
     }
   }]);
@@ -253,20 +227,20 @@ function _get_original__(variableName) {
     case 'logger':
       return logger;
 
-    case 'Promise':
-      return _promise2.default;
+    case 'requestInputMapping':
+      return _tPipeExpress.requestInputMapping;
 
-    case 'expressRequestMapping':
-      return expressRequestMapping;
+    case 'sendResponseFinallyMapping':
+      return _tPipeExpress.sendResponseFinallyMapping;
 
-    case 'expressResponseMapping':
-      return expressResponseMapping;
-
-    case 'expressErrorMapping':
-      return expressErrorMapping;
+    case 'statusErrorMapping':
+      return _tPipeExpress.statusErrorMapping;
 
     case 'match':
       return _match2.default;
+
+    case 'Promise':
+      return _promise2.default;
 
     case 'errorMatch':
       return errorMatch;
@@ -311,7 +285,9 @@ function _set__(variableName, value) {
       _RewiredData__[variableName] = value;
     }
 
-    return value;
+    return function () {
+      _reset__(variableName);
+    };
   }
 }
 

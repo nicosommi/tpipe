@@ -3,13 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.__RewireAPI__ = exports.__ResetDependency__ = exports.__set__ = exports.__Rewire__ = exports.__GetDependency__ = exports.__get__ = exports.piper = exports.expressErrorMapping = exports.expressResponseMapping = exports.expressRequestMapping = undefined;
+exports.__RewireAPI__ = exports.__ResetDependency__ = exports.__set__ = exports.__Rewire__ = exports.__GetDependency__ = exports.__get__ = exports.piper = exports.statusErrorMapping = exports.sendResponseFinallyMapping = exports.requestInputMapping = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _tPipe = require('./tPipe.js');
 
 var _tPipe2 = _interopRequireDefault(_tPipe);
+
+var _tPipeExpress = require('./tPipeExpress.js');
 
 var _piper = require('./piper.js');
 
@@ -18,9 +20,9 @@ var _piper2 = _interopRequireDefault(_piper);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _get__('TPipe');
-exports.expressRequestMapping = _tPipe.expressRequestMapping;
-exports.expressResponseMapping = _tPipe.expressResponseMapping;
-exports.expressErrorMapping = _tPipe.expressErrorMapping;
+exports.requestInputMapping = _tPipeExpress.requestInputMapping;
+exports.sendResponseFinallyMapping = _tPipeExpress.sendResponseFinallyMapping;
+exports.statusErrorMapping = _tPipeExpress.statusErrorMapping;
 exports.piper = _piper2.default;
 
 var _RewiredData__ = Object.create(null);
@@ -105,7 +107,9 @@ function _set__(variableName, value) {
       _RewiredData__[variableName] = value;
     }
 
-    return value;
+    return function () {
+      _reset__(variableName);
+    };
   }
 }
 
