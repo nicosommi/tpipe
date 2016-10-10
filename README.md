@@ -28,7 +28,7 @@ There are four kinds of mappings allowed in a tpipe. Input, output, error and fi
 All mappings are functions that returns values or promises.
 
 ### Input mappers
-An input mapping receives the input message to accumulate and the other arguments received by the callee.
+An input mapping receives the input message to accumulate and the other arguments sent by the caller.
 
 ```javascript
 // value example
@@ -37,7 +37,7 @@ function myInputMapping(input, req, res, next) {
 }
 // promise example
 function myInputMapping(input, req, res, next) {
-  return Promise.resolve(myAsyncPromiseOperation);
+  return Promise.resolve(someResult);
 }
 ```
 
@@ -51,12 +51,12 @@ function myHandler(input, req, res, next) {
 }
 // promise example
 function myHandler(input, req, res, next) {
-  return Promise.resolve(myAsyncPromiseOperation);
+  return Promise.resolve(someResult);
 }
 ```
 
 ### Output mappers
-An output mapping receives the output message to accumulate, the input, and the other arguments received by the callee. This mappings are triggered after the handler finishes and the initial output will be its returned value / promise resolution value.
+An output mapping receives the output message to accumulate, the input, and the other arguments sent by the caller. This mappings are triggered after the handler finishes and the initial output will be its returned value / promise resolution value.
 
 ```javascript
 // value example
@@ -65,12 +65,12 @@ function myOutputMapping(output, input, req, res, next) {
 }
 // promise example
 function myOutputMapping(output, input, req, res, next) {
-  return Promise.resolve(myAsyncPromiseOperation);
+  return Promise.resolve(someResult);
 }
 ```
 
 ### Error mappers
-An error mapping receives the error message to accumulate initialized with a message with the error object on the body section, the input, and the other arguments received by the callee. It is triggered when some other mapping throws an error or reject the returned promise.
+An error mapping receives the error message to accumulate initialized with a message with the error object on the body section, the input, and the other arguments sent by the caller. It is triggered when some other mapping throws an error or reject the returned promise.
 
 ```javascript
 // value example
@@ -79,12 +79,12 @@ function myErrorMapping(error, input, req, res, next) {
 }
 // promise example
 function myErrorMapping(error, input, req, res, next) {
-  return Promise.resolve(myAsyncPromiseOperation);
+  return Promise.resolve(someResult);
 }
 ```
 
 ### Finally mappers
-A finally mapping receives the output/error message accumulated, the input, and the other arguments received by the callee. It is triggered on both scenarios, after the output mappings but also after the error mappings.
+A finally mapping receives the output/error message accumulated, the input, and the other arguments sent by the caller. It is triggered on both scenarios, after the output mappings but also after the error mappings.
 
 ```javascript
 // value example
@@ -94,7 +94,7 @@ function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
 }
 // promise example
 function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
-  return Promise.resolve(myAsyncPromiseOperation);
+  return Promise.resolve(someResult);
 }
 ```
 
