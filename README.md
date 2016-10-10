@@ -9,24 +9,96 @@
 <!-- endph -->
 
 <!-- ph description -->
-This thing is just a sequential pipe to easily organize your service flow and the error handling.
-It allows you to chain input, output, error and finally mappings in a framework/protocol agnostic way, so you can switch frameworks and formats by just writing new mappings.
+TPipe is a simple, yet powerful, tool to easily organize and orchestrate your functions.
+It optimizes code reutilization and readability.
 
-Just one rule for structure -> *messages* inside mappers and handlers are objects with *this structure*:  
+It allows you to chain input, output, error and finally mappings with you handler function in a framework/protocol agnostic way, so you can switch frameworks and formats by just writing new mappings.
+
+All pipes have a collections of mappings and a handler, which is the core method.
+
+By using just one rule for structure -> *messages* inside mappers and handlers are objects with *this structure* (names are configurable via options, but these are the defaults):  
 * a *parameters* object (meta information)
 * a *body* object (information)
-If you break this simple rule, you may produce unpredictible behavior. Anyway, you will always receive a pre initialized message with that structure from tpipe. So make sure you don't override it with another one.  
 
-Messages can be sent as input or as output for a specific mapper/handler.  
-An input handler will receive an accumulated input message, and then every argument that is received by your framework.
-A handler will receive just the input message which is the result of the input mappings and respond with a promise that resolves with an output message.  
-An output handler will receive the accumulated output message (initialized as the handler output), the input message sent to the handler, and also all the arguments sent by the current framework. The same applies to the error and the finally mappings.  
+## Execution pipeline
+A T Pipe will accumulate an input via a promise-aware reduce function within its input mappers, the it will call the handler with it, and then it will execute the output/error mappings accumulating an output/error object respectively, and then the finally mappings.
 
-Currently defaults to express (built in basic mappings) but it works as a redux thunk creator as well.  
+### Mappers
+There are four kinds of mappings allowed in a tpipe. Input, output, error and finally.
+All mappings are functions that returns values or promises.
+
+### Input mappers
+An input mapping receives the input message to accumulate and the other arguments received by the callee.
+
+```javascript
+// value example
+function myInputMapping(input, req, res, next) {
+  return { parameters: { page: 1 }, body: { name: 'my name' } };
+}
+// promise example
+function myInputMapping(input, req, res, next) {
+  return Promise.resolve(myAsyncPromiseOperation);
+}
+```
+
+### Handler
+This is your core method. It receives the input accumulated from the mappings, and all the other arguments. A handler must return a message which will be the initial value for the output mappings or reject/throw, case in which the error mappings will be triggered.
+
+```javascript
+// value example
+function myHandler(input, req, res, next) {
+  return { parameters: { page: 1 }, body: { name: 'my name' } };
+}
+// promise example
+function myHandler(input, req, res, next) {
+  return Promise.resolve(myAsyncPromiseOperation);
+}
+```
+
+### Output mappers
+An output mapping receives the output message to accumulate, the input, and the other arguments received by the callee.
+
+```javascript
+// value example
+function myOutputMapping(output, input, req, res, next) {
+  return { parameters: { page: 1 }, body: { name: 'my name' } };
+}
+// promise example
+function myOutputMapping(output, input, req, res, next) {
+  return Promise.resolve(myAsyncPromiseOperation);
+}
+```
+
+### Error mappers
+An error mapping receives the error message to accumulate, the input, and the other arguments received by the callee.
+
+```javascript
+// value example
+function myErrorMapping(error, input, req, res, next) {
+  return { parameters: { page: 1 }, body: { name: 'my name' } };
+}
+// promise example
+function myErrorMapping(error, input, req, res, next) {
+  return Promise.resolve(myAsyncPromiseOperation);
+}
+```
+
+### Finally mappers
+A finally mapping receives the output/error message accumulated, the input, and the other arguments received by the callee.
+
+```javascript
+// value example
+function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
+  return { parameters: { page: 1 }, body: { name: 'my name' } };
+}
+// promise example
+function myFinallyMapping(outputOrErrorMessage, input, req, res, next) {
+  return Promise.resolve(myAsyncPromiseOperation);
+}
+```
+
+Currently defaults to express (built in basic mappings) but it works as a redux thunk as well.  
 It supports error matching with regexes.  
-
-As this is a pipe, the order matter and the returned value on a mapping is what is sent to the next one.  
-*REMEMBER TO RETURN THE ACCUMULATED OBJECT ON YOUR MAPPINGS*
 
 <!-- endph -->
 
@@ -35,46 +107,19 @@ With Express
 ```javascript
 // more code...
 
-import TPipe, {} from "tpipe"
-const options = {
-  inputMappings: [expressRequestMapping],
-  outputMappings: [],
-  errorMappings: [expressErrorMapping],
-  finallyMappings: [expressResponseMapping]
-}
+import TPipe from "tpipe"
 const myPipe = new TPipe(function (input, req, res, next) {
   return Promise.resolve({ parameters: {}, body: {}})
-}, options)
+})
 
 app.get('/resouce', myPipe.getHandler())
 
 // more code...
 ```
-
-With Redux
-
-```javascript
-// more code...
-
-import TPipe from "tpipe"
-const options = {
-  inputMappings: [],
-  outputMappings: [],
-  errorMappings: [],
-  finallyMappings: []
-}
-const myPipe = new TPipe(function (input, myarg, mysecondArg, dispatch, getState) {
-  return Promise.resolve({ parameters: {}, body: {}})
-})
-
-//on the component (maybe a react component, remember that you will need redux-thunk anyway)
-dispatch(myPipe.getThunk())
-// more code...
-```
+More examples comming soon...
 
 <!-- endph -->
 <!-- ph howItWorks -->
-*TBD*
 <!-- endph -->
 <!-- ph qualityAndCompatibility -->
 # Quality and Compatibility
