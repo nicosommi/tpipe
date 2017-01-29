@@ -92,10 +92,10 @@ packageObject = {
 packageObject = {
   ...packageObject,
   nyc: {
-    lines: 90,
-    statements: 90,
-    functions: 90,
-    branches: 90,
+    lines: 85,
+    statements: 85,
+    functions: 85,
+    branches: 85,
     sourceType: 'module',
     include: [
       'source/**/*.js'
