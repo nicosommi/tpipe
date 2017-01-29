@@ -1,5 +1,7 @@
 import getLogger from '../../source/lib/utils/log.js'
 
+require('should')
+
 const logger = getLogger('test')
 
 describe('log', () => {

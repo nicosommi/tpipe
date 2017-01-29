@@ -6,6 +6,8 @@ import {
 } from '../source/lib/tPipeExpress.js'
 import piper from '../source/lib/piper.js'
 
+require('should')
+
 describe('lib', () => {
   const expectedExportedObject = {
     default: TPipe,

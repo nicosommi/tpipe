@@ -104,20 +104,48 @@ It supports error matching to values with regexes.
 <!-- endph -->
 
 <!-- ph usagesAndExamples -->
-With Express
 ```javascript
-// more code...
+import piper from 'tpipe'
+import expressPipeSet from 'tpipe-express'
 
-import TPipe from "tpipe"
-const myPipe = new TPipe(function (input, req, res, next) {
-  return Promise.resolve({ parameters: {}, body: {}})
-})
+export function renderView(output, input, req, res) {
+  if (output.parameters.view) {
+    res.render(output.parameters.view, output.body);
+  } else {
+    res.status(output.parameters.status || 200).send(output.body);
+  }
+  return output;
+}
 
-app.get('/resouce', myPipe.getHandler())
+export function traceErrors(error) {
+  console.trace('Error: ', { error });
+  return error;
+}
 
-// more code...
+const customPipeSet = {
+  ...expressPipeSet,
+  errorMappings: [traceErrors],
+  finallyMappings: [renderView]
+};
+
+ // piper returns an object with a pipe inside to be injected in express
+const { pipe } = piper(
+    input =>
+      (
+        {
+          parameters: {
+            view: 'index'
+          },
+          body: {
+            ...input.body
+          }
+        }
+      )
+  )
+.incorporate(customPipeSet) //put the mappings around the handler and prepare methods for express (getHandler)
+
+this.app.get('/myRoute', pipe.getHandler());
 ```
-More examples comming soon...
 
 <!-- endph -->
 <!-- ph howItWorks -->
@@ -147,8 +175,6 @@ npm install tpipe --save
 
 You can submit your ideas through our [issues system](https://github.com/nicosommi/tpipe/issues), or make the modifications yourself and submit them to us in the form of a [GitHub pull request](https://help.github.com/articles/using-pull-requests/).
 
-For GDD-related service [go here](http://integracionesagiles.com)
-Or contact me to nicosommi@gmail.com for any business related thing or anything else.
 <!-- endstamp -->
 <!-- stamp runningtests -->
 ## Running Tests

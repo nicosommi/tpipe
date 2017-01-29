@@ -1,5 +1,7 @@
 import match from '../../source/lib/utils/match.js'
 
+require('should')
+
 describe('match', () => {
   it('should return the property value correctly if the string matches', () => {
     const source = [

@@ -4,6 +4,7 @@ logs
 /dna
 *.log.*
 
+.nyc_output
 
 # nothing yet but it will be
 

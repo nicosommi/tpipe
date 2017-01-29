@@ -6,6 +6,8 @@ import defaultSet, {
 } from '../source/lib/tPipeExpress.js'
 import sinon, { spy } from 'sinon'
 
+require('should')
+
 describe('tpipe express', () => {
   describe('mapping set', () => {
     it('should expose a default mapping set', () => {

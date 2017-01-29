@@ -1,121 +1,198 @@
-/* ph replacements */
-/* name, /'name': 'tpipe'/g, 'name': 'tpipe' */
-/* version, /'version': '\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b'/ig, 'version': '0.0.6' */
-/* description, /'description': 'a\ gdd\ utility'/g, 'description': 'piper' */
-/* main, /'main': '[a-zA-Z\.\/]+'/ig, 'main': './dist/lib/lib.js' */
-/* license, /MIT/g, MIT */
-/* endph */
-/* ph ignoringStamps */
-/* webapp_scripts, service_scripts */
-/* webapp_dependencies, service_dependencies */
-/* webapp_devDependencies, service_devDependencies */
-/* graph_dependencies */
-/* rdbms */
+/* ph stamps */
+/* /^(?!expressWebServer)(?!eslintLinting)(?!reactMochaEnzyme)(?!webpackWithDevServer)(?!styledComponents)(?!expectAssertions).*$/ */
 /* endph */
 
-module.exports =
-{
-  'name': 'tpipe',
-  'version': '0.0.6',
-  'description': 'piper',
-  'main': './dist/lib/lib.js',
-  'standard': {
-    'globals': [
-      'describe',
-      'context',
-      'before',
-      'beforeEach',
-      'after',
-      'afterEach',
-      'it',
-      'xit',
-      'expect'
-    ]
+let packageObject = {
+  babel: {
+    presets: ['es2015', 'stage-2']
   },
-  /* ph bin */
-  /* endph */
-  'scripts': {
-    /* ph componentScripts */
-    /* endph */
-    /* stamp webapp_scripts */
-    /* endstamp */
-    /* stamp lib_scripts */
-    /* endstamp */
-    /* stamp service_scripts */
-    /* endstamp */
-    'gddify': 'gddify',
-    'test': 'gulp test',
-    'build': 'gulp build',
-    'coverage': 'gulp test-coverage',
-    'watch': 'gulp test-watch',
-    'gulp': 'gulp',
-    'posttest': 'gulp build'
-  },
-  'author': 'nicosommi',
-  'license': 'MIT',
-  'dependencies': {
-    /* ph componentDependencies */
-    'block-js': '0.0.2',
-    'regex-parser': '^2.2.1',
-    'semver': '^5.1.0',
-    'fs-extra': '^0.26.7',
-    /* endph */
-    /* stamp webapp_dependencies */
-    /* endstamp */
-    /* stamp lib_dependencies */
-    'incognito': '^0.1.4',
-    /* endstamp */
-    /* stamp service_dependencies */
-    /* endstamp */
-    /* stamp rdbms_dependencies */
-    /* endstamp */
-    /* stamp graph_dependencies */
-    /* endstamp */
-    'cuid': '^1.3.8',
+  dependencies: {
     'bluebird': '^3.3.5',
     'debug': '^2.2.0'
   },
-  'devDependencies': {
-    /* ph componentDevDependencies */
-    'standard': '^7.1.2',
-    /* endph */
-    /* stamp webapp_devDependencies */
-    /* endstamp */
-    /* stamp lib_devDependencies */
-    /* endstamp */
-    /* stamp service_devDependencies */
-    /* endstamp */
-    'sinon': '^1.17.3',
-    'should': '^8.2.2',
-    'mocha': '^2.2.5',
-    'babel': '^6.5.2',
-    'babel-core': '^6.6.4',
-    'babel-plugin-rewire': '^1.0.0-rc-1',
-    'babel-preset-es2015': '^6.6.0',
-    'babel-preset-stage-3': '^6.5.0',
-    'gulp': '^3.9.1',
-    'gulp-babel': '^6.1.2',
-    'gulp-babel-istanbul': '^1.0.0',
-    'gulp-istanbul': '^0.10.3',
-    'gulp-mocha': '^2.1.3',
-    'gulp-util': '^3.0.6',
-    'run-sequence': '^1.1.5',
-    'del': '^2.2.0',
-    'coveralls': '^2.11.2'
+  devDependencies: {
+    gddify: '^0.1.6',
+    'babel-cli': '^6.22.2',
+    'babel-polyfill': '^6.9.1',
+    'babel-preset-es2015': '^6.9.0',
+    'babel-preset-stage-2': '^6.18.0',
+    'babel-register': '^6.9.0',
+    'babel-require': '^1.0.1',
+    'cross-env': '^3.1.3',
+    'shx': '^0.2.2'
   },
-  /* ph repository */
-  'repository': {
-    'type': 'git',
-    'url': 'git+https://github.com/nicosommi/tpipe.git'
+  scripts: {
+    gddify: 'gddify',
+    build: 'shx rm -fr dist && babel source -d dist'
   },
-  /* endph */
-  /* ph extra */
-  /* endph */
-  'readmeFilename': 'README.md',
-  /* ph contributors */
-  'contributors': [],
-  /* endph */
-  /* ph homepage */
-  'homepage': 'https://github.com/nicosommi/tpipe'
-  /* endph */
+  readmeFilename: 'README.md',
+  author: 'nicosommi',
+  license: 'MIT'
 }
+
+/* ph customPackage */
+packageObject = {
+  ...packageObject,
+  babel: {
+    ...packageObject.babel
+  },
+  name: 'tpipe',
+  version: '0.0.6',
+  description: 'T piper for functions',
+  repository: {
+    type: 'git',
+    url: 'ssh://github.com/nicosommi/tpipe.git'
+  },
+  homepage: 'https://github.com/nicosommi/tpipe',
+  devDependencies: {
+    ...packageObject.devDependencies,
+    debug: '^2.2.0',
+    sinon: '^1.17.7'
+  },
+  scripts: {
+    ...packageObject.scripts
+  }
+}
+/* endph */
+
+/* stamp expressWebServer */
+/* endstamp */
+
+/* stamp mochaTesting */
+packageObject = {
+  ...packageObject,
+  devDependencies: {
+    ...packageObject.devDependencies,
+    mocha: '^2.5.3',
+    nyc: '^10.0.0',
+    proxyquire: '^1.7.10'
+  },
+  scripts: {
+    ...packageObject.scripts,
+    test: 'cross-env NODE_ENV=test nyc --reporter=text-summary mocha \'spec/**/*.spec.js\' --require mocha.setup.js',
+    // 'test:watch': 'cross-env NODE_ENV=test watch \'nyc --reporter=text-summary mocha "spec/**/*.spec.js" --require mocha.setup.js\' --reporter min src --ignoreDotFiles',
+    'test:watch': 'cross-env NODE_ENV=test nyc --reporter=text-summary mocha "spec/**/*.spec.js" --require mocha.setup.js --reporter min --watch',
+    coverage: 'cross-env NODE_ENV=test nyc mocha \'spec/**/*.spec.js\' --require mocha.setup.js',
+    // 'coverage:watch': 'cross-env NODE_ENV=test watch \'nyc mocha "spec/**/*.spec.js" --require mocha.setup.js\' src --ignoreDotFiles'
+    'coverage:watch': 'cross-env NODE_ENV=test nyc mocha \'spec/**/*.spec.js\' --require mocha.setup.js --watch --reporter min'
+  }
+}
+/* endstamp */
+
+/* stamp reactMochaEnzyme */
+/* endstamp */
+
+/* stamp webpackWithDevServer */
+/* endstamp */
+
+/* stamp styledComponents */
+/* endstamp */
+
+/* stamp nycEnforceCoverage */
+packageObject = {
+  ...packageObject,
+  nyc: {
+    lines: 90,
+    statements: 90,
+    functions: 90,
+    branches: 90,
+    sourceType: 'module',
+    include: [
+      'source/**/*.js'
+    ],
+    exclude: [
+      'spec/**/*.spec.js'
+    ],
+    reporter: [
+      'lcov',
+      'text',
+      'html'
+    ],
+    require: [
+      'babel-register'
+    ],
+    extension: [
+      '.js'
+    ],
+    cache: true,
+    all: true,
+    'check-coverage': true,
+    'report-dir': './.coverage'
+  }
+}
+/* endstamp */
+
+/* stamp expectAssertions */
+/* endstamp */
+
+/* stamp shouldAssertions */
+packageObject = {
+  ...packageObject,
+  devDependencies: {
+    ...packageObject.devDependencies,
+    should: '^11.2.0'
+  }
+}
+/* endstamp */
+
+/* stamp nspPackageManagement */
+packageObject = {
+  ...packageObject,
+  dependencies: {
+    ...packageObject.dependencies,
+    nsp: '^2.6.2'
+  },
+  scripts: {
+    ...packageObject.scripts,
+    check: 'nsp check'
+  }
+}
+/* endstamp */
+
+/* stamp eslintLinting */
+/* endstamp */
+
+/* stamp standardLinting */
+packageObject = {
+  ...packageObject,
+  devDependencies: {
+    ...packageObject.devDependencies,
+    'standard': '^8.6.0',
+    ghooks: '^1.3.2'
+  },
+  'standard': {
+    rules: {
+      'react/jsx-filename-extension': [
+        1,
+        { extensions: ['.js', '.jsx'] }
+      ],
+      'import/no-extraneous-dependencies': [
+        'error',
+        {
+          devDependencies: true,
+          optionalDependencies: true,
+          peerDependencies: true
+        }
+      ],
+      'react/forbid-prop-types': [0]
+    },
+    'no-plusplus': [
+      1,
+      { allowForLoopAfterthoughts: true }
+    ],
+    'globals': []
+  },
+  config: {
+    ghooks: {
+      'pre-commit': `${packageObject.scripts.coverage} && standard --fix source spec`
+    }
+  },
+  scripts: {
+    ...packageObject.scripts,
+    test: `standard --fix source && ${packageObject.scripts.test}`,
+    fix: 'standard --fix package.js source/**/* spec/**/*'
+  }
+}
+/* endstamp */
+
+module.exports = packageObject

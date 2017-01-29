@@ -1,6 +1,8 @@
 import piper from '../source/lib/piper.js'
 import TPipe from '../source/lib/tPipe.js'
 
+require('should')
+
 describe('TPipe', () => {
   let handler
   let options

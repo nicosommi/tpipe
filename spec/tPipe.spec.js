@@ -1,6 +1,8 @@
 import TPipe from '../source/lib/tPipe.js'
 import sinon from 'sinon'
 
+require('should')
+
 describe('TPipe', () => {
   let tPipe,
     handler,
