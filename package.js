@@ -38,6 +38,7 @@ packageObject = {
   },
   name: 'tpipe',
   version: '0.0.6',
+  main: './dist/lib/lib.js',
   description: 'T piper for functions',
   repository: {
     type: 'git',
