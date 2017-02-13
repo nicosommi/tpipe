@@ -37,7 +37,7 @@ packageObject = {
     ...packageObject.babel
   },
   name: 'tpipe',
-  version: '0.0.6',
+  version: '0.0.7',
   main: './dist/lib/lib.js',
   description: 'T piper for functions',
   repository: {
