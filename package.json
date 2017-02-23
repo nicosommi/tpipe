@@ -11,23 +11,23 @@
     "nsp": "^2.6.2"
   },
   "devDependencies": {
-    "gddify": "^0.1.6",
     "babel-cli": "^6.22.2",
-    "babel-polyfill": "^6.9.1",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-2": "^6.18.0",
     "babel-register": "^6.9.0",
     "babel-require": "^1.0.1",
     "cross-env": "^3.1.3",
-    "shx": "^0.2.2",
     "debug": "^2.2.0",
-    "sinon": "^1.17.7",
+    "gddify": "^0.1.6",
+    "ghooks": "^1.3.2",
     "mocha": "^2.5.3",
     "nyc": "^10.0.0",
     "proxyquire": "^1.7.10",
     "should": "^11.2.0",
-    "standard": "^8.6.0",
-    "ghooks": "^1.3.2"
+    "shx": "^0.2.2",
+    "sinon": "^1.17.7",
+    "standard": "^8.6.0"
   },
   "scripts": {
     "gddify": "gddify",
