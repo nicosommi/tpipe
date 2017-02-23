@@ -9,7 +9,7 @@ output
 	parameters
 	body
 */
-
+import "babel-polyfill"
 import { Logger } from './utils/log.js'
 import match from './utils/match.js'
 import Promise from './promise.js'
@@ -95,35 +95,32 @@ export default class TPipe {
     }
   }
 
-  open (...args) {
+  async open (...args) {
     logger.log('processing message')
     let input = {
       [this.options.metaKey]: {},
       [this.options.payloadKey]: {}
     }
-    let output = { [this.options.metaKey]: {}, [this.options.payloadKey]: {} }
-
+    let output = { 
+      [this.options.metaKey]: {}, 
+      [this.options.payloadKey]: {} 
+    }
     logger.log('mapping message input')
     const inputPipeArgs = [].concat(args)
-    return this.pipe(this.options.inputMappings, inputPipeArgs, input, 'input')
-      .then(hi => (input = hi)) // input handler (after input mappings) overrides input
-      .then(() => this.handler(input))
-      .then(processOutput => {
-        logger.log('mapping message process output', {output})
-        output = processOutput
-        const outputPipeArgs = [input].concat(args)
-        return this.pipe(this.options.outputMappings, outputPipeArgs, output, 'output')
-      })
-      .catch(error => {
-        logger.log('error mapping')
-        output = { [this.options.metaKey]: {}, [this.options.payloadKey]: error }
-        const errorPipeArgs = [input].concat(args)
-        return this.pipe(this.options.errorMappings, errorPipeArgs, output, 'error')
-      })
-      .then(() => {
-        logger.log('finally mapping')
-        const finallyPipeArgs = [input].concat(args)
-        return this.pipe(this.options.finallyMappings, finallyPipeArgs, output, 'finally')
-      })
+    try {
+      input = await this.pipe(this.options.inputMappings, inputPipeArgs, input, 'input')
+      output = await this.handler(input)
+      logger.log('mapping message process output', {output})
+      const outputPipeArgs = [input].concat(args)
+      await this.pipe(this.options.outputMappings, outputPipeArgs, output, 'output')
+    } catch (error) {
+      output = { [this.options.metaKey]: {}, [this.options.payloadKey]: error }
+      logger.log('error mapping')
+      const errorPipeArgs = [input].concat(args)
+      await this.pipe(this.options.errorMappings, errorPipeArgs, output, 'error')
+    }
+    logger.log('finally mapping')
+    const finallyPipeArgs = [input].concat(args)
+    return this.pipe(this.options.finallyMappings, finallyPipeArgs, output, 'finally')
   }
 }
