@@ -33,6 +33,11 @@ export class Piper {
     return this.concatTo('inputMappings', args)
   }
 
+  handler (handler) {
+    this.pipe.handler = handler
+    return this
+  }
+
   output (...args) {
     return this.concatTo('outputMappings', args)
   }
@@ -59,7 +64,13 @@ export class Piper {
 }
 
 export default function piper (handler, options = {}) {
-  const pipe = new TPipe(handler)
+  let h = (i) => (i)
+  if (typeof handler === 'function') {
+    h = handler
+  } else {
+    options = handler
+  }
+  const pipe = new TPipe(h)
   const result = new Piper(pipe)
   result.reset()
   Object.assign(result.pipe.options, options)

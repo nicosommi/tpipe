@@ -17,7 +17,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Piper = exports.Piper = function () {
+var Piper = function () {
   function Piper(pipe) {
     _classCallCheck(this, Piper);
 
@@ -61,6 +61,12 @@ var Piper = exports.Piper = function () {
       }
 
       return this.concatTo('inputMappings', args);
+    }
+  }, {
+    key: 'handler',
+    value: function handler(_handler) {
+      this.pipe.handler = _handler;
+      return this;
     }
   }, {
     key: 'output',
@@ -108,10 +114,19 @@ var Piper = exports.Piper = function () {
   return Piper;
 }();
 
+exports.Piper = Piper;
 function piper(handler) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  var pipe = new _tPipe2.default(handler);
+  var h = function h(i) {
+    return i;
+  };
+  if (typeof handler === 'function') {
+    h = handler;
+  } else {
+    options = handler;
+  }
+  var pipe = new _tPipe2.default(h);
   var result = new Piper(pipe);
   result.reset();
   Object.assign(result.pipe.options, options);

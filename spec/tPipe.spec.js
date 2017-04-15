@@ -1,3 +1,4 @@
+import { describe, it, beforeEach } from 'mocha'
 import TPipe from '../source/lib/tPipe.js'
 import sinon from 'sinon'
 

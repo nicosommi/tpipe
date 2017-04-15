@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha'
 import match from '../../source/lib/utils/match.js'
 
 require('should')

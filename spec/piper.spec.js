@@ -1,3 +1,4 @@
+import { describe, it, beforeEach } from 'mocha'
 import piper from '../source/lib/piper.js'
 import TPipe from '../source/lib/tPipe.js'
 
@@ -53,6 +54,31 @@ describe('TPipe', () => {
         const anotherOutputMapping = () => {}
         piperObj.output(newOutputMapping, anotherOutputMapping)
         piperObj.pipe.options.outputMappings.should.eql([aMapping, newOutputMapping, anotherOutputMapping])
+      })
+    })
+    
+    describe('(handler)', () => {
+      beforeEach(() => {
+        handler = () => ({a: 1})
+        aMapping = () => {}
+        options = {
+          inputMappings: [aMapping],
+          outputMappings: [aMapping],
+          errorMappings: [aMapping],
+          finallyMappings: [aMapping],
+          metaKey: 'parameters',
+          payloadKey: 'body'
+        }
+        piperObj = piper(options)
+          .handler(handler)
+      })
+
+      it('should allow to add a handler method in the middle of the chain', () => {
+        piperObj.pipe.handler.should.eql(handler)
+      })
+
+      it('should take options as first argument', () => {
+        piperObj.pipe.options.should.eql(options)
       })
     })
 

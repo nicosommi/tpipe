@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha'
 import Promise from '../source/lib/promise.js'
 
 require('should')
